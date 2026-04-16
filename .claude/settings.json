@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd *:*)",
+      "Bash(git *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pretooluse-bash-guard.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/posttooluse-index-sync.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/stop-doc-checker.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

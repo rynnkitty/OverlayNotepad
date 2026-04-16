@@ -1,0 +1,231 @@
+{
+  "project": "OverlayNotepad",
+  "lastUpdated": "2026-04-17T12:00:00",
+  "phases": [
+    {
+      "phase": 1,
+      "title": "WPF 기본 윈도우 + 투명 배경 + 텍스트 입력",
+      "status": "planned",
+      "document": "docs/phase/phase1/phase1.md",
+      "sprints": [
+        {
+          "sprint": 1,
+          "title": "WPF 프로젝트 구조 + 투명 윈도우 + 기본 텍스트 입력",
+          "status": "planned",
+          "branch": "phase1-sprint1",
+          "document": "docs/phase/phase1/sprint1/sprint1.md",
+          "progress": { "total": 3, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "WPF 솔루션 및 프로젝트 생성",
+              "path": "docs/phase/phase1/sprint1/task1/task1.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "투명 윈도우 + 드래그/리사이즈",
+              "path": "docs/phase/phase1/sprint1/task2/task2.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "TextBox 배치 + 텍스트 입력 검증",
+              "path": "docs/phase/phase1/sprint1/task3/task3.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        },
+        {
+          "sprint": 2,
+          "title": "투명도 모드 + Always on Top + 컨텍스트 메뉴 골격",
+          "status": "planned",
+          "branch": "phase1-sprint2",
+          "document": "docs/phase/phase1/sprint2/sprint2.md",
+          "progress": { "total": 5, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "컨텍스트 메뉴 골격 + 종료 기능",
+              "path": "docs/phase/phase1/sprint2/task1/task1.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "Always on Top (Topmost) 토글",
+              "path": "docs/phase/phase1/sprint2/task2/task2.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "배경 투명 모드 전환",
+              "path": "docs/phase/phase1/sprint2/task3/task3.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task4",
+              "title": "전체 투명 모드 + 투명도 단계 조절",
+              "path": "docs/phase/phase1/sprint2/task4/task4.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task5",
+              "title": "통합 검증 + 엣지 케이스 확인",
+              "path": "docs/phase/phase1/sprint2/task5/task5.md",
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "title": "텍스트 테두리/그림자 + 자동 저장 + 윈도우 관리",
+      "status": "planned",
+      "document": "docs/phase/phase2/phase2.md",
+      "sprints": [
+        {
+          "sprint": 1,
+          "title": "텍스트 테두리 및 그림자 효과",
+          "status": "planned",
+          "branch": "phase2-sprint1",
+          "document": "docs/phase/phase2/sprint1/sprint1.md",
+          "progress": { "total": 4, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "TextEffectSettings 모델 + OutlinedTextControl 커스텀 컨트롤",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "DropShadowEffect + MainWindow 이중 레이어 통합",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "테두리/그림자 토글 + 컨텍스트 메뉴 연동",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task4",
+              "title": "통합 검증 + 가독성 테스트 + 엣지 케이스",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        },
+        {
+          "sprint": 2,
+          "title": "설정 관리 + 자동 저장 + 윈도우 관리",
+          "status": "planned",
+          "branch": "phase2-sprint2",
+          "document": "docs/phase/phase2/sprint2/sprint2.md",
+          "progress": { "total": 5, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "AppSettings 모델 + JSON 직렬화 유틸리티",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "SettingsManager (로드/저장/손상 복원)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "AutoSaveManager (디바운스 자동 저장)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task4",
+              "title": "윈도우 위치/크기 저장 및 복원 + 화면 범위 보정",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task5",
+              "title": "비정상 종료 대응 + MainWindow 통합 + 최종 검증",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "title": "시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성",
+      "status": "planned",
+      "document": "docs/phase/phase3/phase3.md",
+      "sprints": []
+    },
+    {
+      "phase": 4,
+      "title": "글로벌 핫키 + Click-Through + 최종 마무리",
+      "status": "planned",
+      "document": "docs/phase/phase4/phase4.md",
+      "sprints": []
+    }
+  ],
+  "hotfixes": [],
+  "deployHistory": []
+}
