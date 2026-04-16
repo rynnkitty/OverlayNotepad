@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T12:00:00",
+  "lastUpdated": "2026-04-17T18:00:00",
   "phases": [
     {
       "phase": 1,
@@ -216,7 +216,109 @@
       "title": "시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성",
       "status": "planned",
       "document": "docs/phase/phase3/phase3.md",
-      "sprints": []
+      "sprints": [
+        {
+          "sprint": 1,
+          "title": "시스템 트레이 + 서식 지원",
+          "status": "planned",
+          "branch": "phase3-sprint1",
+          "document": "docs/phase/phase3/sprint1/sprint1.md",
+          "progress": { "total": 5, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "TrayIconManager (시스템 트레이 아이콘 + 트레이 메뉴)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "AppSettings 서식 필드 확장 + 글꼴 유효성 헬퍼",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "서식 변경 컨텍스트 메뉴 서브메뉴 (글꼴/크기/색상)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task4",
+              "title": "MainWindow 통합 (트레이 + 서식 연동 + 설정 영속화)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task5",
+              "title": "통합 검증 + 엣지 케이스",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        },
+        {
+          "sprint": 2,
+          "title": "다크/라이트 테마 + 컨텍스트 메뉴 완성",
+          "status": "planned",
+          "branch": "phase3-sprint2",
+          "document": "docs/phase/phase3/sprint2/sprint2.md",
+          "progress": { "total": 4, "completed": 0 },
+          "tasks": [
+            {
+              "id": "task1",
+              "title": "ThemeDefinition 모델 + ThemeManager 생성",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task2",
+              "title": "테마 전환 기능 + MainWindow 통합",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task3",
+              "title": "컨텍스트 메뉴 최종 구성 (PRD F11 완성)",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            },
+            {
+              "id": "task4",
+              "title": "통합 검증 + 테마/메뉴 엣지 케이스 + Phase 3 DoD 확인",
+              "path": null,
+              "testPlan": null,
+              "testResult": null,
+              "status": "planned",
+              "commits": []
+            }
+          ]
+        }
+      ]
     },
     {
       "phase": 4,
