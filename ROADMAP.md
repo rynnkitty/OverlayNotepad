@@ -19,7 +19,7 @@
 ## 프로젝트 현황 대시보드
 
 - 전체 진행률: Phase 0/4
-- 현재 Phase: Phase 1 진행 중 (Sprint 1~2 계획 수립 완료), Phase 2 Sprint 1~2 계획 수립 완료, Phase 3 Sprint 1~2 계획 수립 완료
+- 현재 Phase: Phase 1 진행 중 (Sprint 1~2 계획 수립 완료), Phase 2 Sprint 1~2 계획 수립 완료, Phase 3 Sprint 1~2 계획 수립 완료, Phase 4 Sprint 1~2 계획 수립 완료
 - 완료된 스프린트: 없음
 - 다음 마일스톤: Phase 1 완료 (WPF 투명 윈도우 + 텍스트 입력 프로토타입)
 
@@ -223,7 +223,7 @@ WPF 프로젝트를 생성하고 핵심 기반을 구축한다. 타이틀바 없
 나머지 P2-P3 기능을 구현하고 전체 품질을 다듬는다. 글로벌 핫키(F10)로 다른 앱에서도 메모장을 제어하고, Click-Through(F6) 모드로 읽기 전용 오버레이를 지원한다. 단일 EXE 배포 준비까지 완료.
 
 ### 작업 목록
-#### Sprint 1: 글로벌 핫키 + Click-Through
+#### Sprint 1: 글로벌 핫키 + Click-Through 🔄
 - RegisterHotKey Win32 API 인터롭으로 글로벌 핫키 등록
 - 표시/숨김 토글 핫키 (기본: Ctrl+Shift+N)
 - Click-Through 토글 핫키 (기본: Ctrl+Shift+T)
@@ -232,7 +232,7 @@ WPF 프로젝트를 생성하고 핵심 기반을 구축한다. 타이틀바 없
 - 트레이 메뉴에 Click-Through 토글 추가
 - 핫키 충돌 처리 (이미 등록된 경우 알림)
 
-#### Sprint 2: 최종 마무리 + 배포 준비
+#### Sprint 2: 최종 마무리 + 배포 준비 🔄
 - 전체 기능 통합 테스트
 - 성능 최적화 (메모리 80MB 이하, 유휴 CPU 0%, 시작 2초 이내)
 - DPI 인식 설정 (app.manifest에 dpiAware 선언)
