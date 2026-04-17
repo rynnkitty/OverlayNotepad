@@ -43,7 +43,11 @@ namespace OverlayNotepad
             if (settings.Transparency.Mode == "background")
                 this.Background = Brushes.Transparent;
             else
-                this.Background = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+            {
+                var bg = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                bg.Freeze();
+                this.Background = bg;
+            }
 
             // Topmost 복원
             this.Topmost = settings.Topmost;
@@ -70,10 +74,9 @@ namespace OverlayNotepad
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
 
-            // AutoSaveManager 시작
+            // AutoSaveManager 초기화 (타이머는 NotifyChanged() 호출 시 지연 시작)
             _autoSaveManager = new AutoSaveManager(() =>
                 SettingsManager.Instance.SaveMemo(MainTextBox.Text));
-            _autoSaveManager.Start();
 
             // 색상 서브메뉴 동적 생성
             InitializeFontColorMenu();
@@ -85,9 +88,12 @@ namespace OverlayNotepad
             try
             {
                 var iconUri = new System.Uri("pack://application:,,,/Resources/app.ico");
-                var stream = Application.GetResourceStream(iconUri);
-                if (stream != null)
-                    appIcon = new System.Drawing.Icon(stream.Stream);
+                var sri = Application.GetResourceStream(iconUri);
+                if (sri != null)
+                {
+                    using (sri.Stream)
+                        appIcon = new System.Drawing.Icon(sri.Stream);
+                }
             }
             catch { }
             _trayIconManager.Initialize(appIcon ?? System.Drawing.SystemIcons.Application);
@@ -199,8 +205,10 @@ namespace OverlayNotepad
             {
                 OutlinedText.Visibility = Visibility.Visible;
                 OutlinedText.OutlineThickness = fx.OutlineThickness;
-                OutlinedText.OutlineBrush = new SolidColorBrush(
-                    (Color)ColorConverter.ConvertFromString(fx.OutlineColor));
+                var outlineColor = (Color)ColorConverter.ConvertFromString(fx.OutlineColor);
+                var outlineBrush = new SolidColorBrush(outlineColor);
+                outlineBrush.Freeze();
+                OutlinedText.OutlineBrush = outlineBrush;
                 MainTextBox.Foreground = Brushes.Transparent;
             }
             else
@@ -330,7 +338,9 @@ namespace OverlayNotepad
             }
             else
             {
-                this.Background = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                var solidBg = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                solidBg.Freeze();
+                this.Background = solidBg;
                 SettingsManager.Instance.Current.Transparency.Mode = "solid";
             }
             SettingsManager.Instance.Save();
@@ -461,6 +471,7 @@ namespace OverlayNotepad
         {
             var color = (Color)ColorConverter.ConvertFromString(hex);
             var brush = new SolidColorBrush(color);
+            brush.Freeze();
             OutlinedText.FillBrush = brush;
             MainTextBox.CaretBrush = brush;
             if (!TextEffectCurrent.OutlineEnabled)
