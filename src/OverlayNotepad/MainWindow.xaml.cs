@@ -13,6 +13,7 @@ namespace OverlayNotepad
     public partial class MainWindow : Window
     {
         private AutoSaveManager _autoSaveManager;
+        private TrayIconManager _trayIconManager;
         private bool _fontMenuInitialized = false;
 
         // 현재 설정은 SettingsManager.Instance.Current에서 참조
@@ -23,6 +24,7 @@ namespace OverlayNotepad
         {
             InitializeComponent();
             this.Closing += Window_Closing;
+            this.StateChanged += Window_StateChanged;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -48,6 +50,14 @@ namespace OverlayNotepad
             SyncOutlinedTextProperties();
             ApplyTextEffects();
 
+            // 서식 설정 복원
+            var font = settings.Font;
+            if (!FontHelper.IsInstalled(font.Family))
+                font.Family = "맑은 고딕";
+            ApplyFontFamily(font.Family);
+            ApplyFontSize(font.Size);
+            ApplyFontColor(font.Color);
+
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
 
@@ -58,6 +68,23 @@ namespace OverlayNotepad
 
             // 색상 서브메뉴 동적 생성
             InitializeFontColorMenu();
+
+            // TrayIconManager 초기화
+            _trayIconManager = new TrayIconManager();
+            System.Drawing.Icon appIcon = null;
+            try
+            {
+                var iconUri = new System.Uri("pack://application:,,,/Resources/app.ico");
+                var stream = Application.GetResourceStream(iconUri);
+                if (stream != null)
+                    appIcon = new System.Drawing.Icon(stream.Stream);
+            }
+            catch { }
+            _trayIconManager.Initialize(appIcon ?? System.Drawing.SystemIcons.Application);
+            _trayIconManager.UpdateAlwaysOnTopState(this.Topmost);
+            _trayIconManager.ToggleVisibilityRequested += OnTrayToggleVisibility;
+            _trayIconManager.AlwaysOnTopToggleRequested += OnTrayAlwaysOnTopToggle;
+            _trayIconManager.ExitRequested += OnTrayExit;
 
             MainTextBox.Focus();
         }
@@ -76,6 +103,10 @@ namespace OverlayNotepad
             _autoSaveManager?.Stop();
             SettingsManager.Instance.SaveMemo(MainTextBox.Text);
             SettingsManager.Instance.Save();
+
+            // 트레이 아이콘 정리
+            _trayIconManager?.Dispose();
+            _trayIconManager = null;
         }
 
         private void RestoreWindowBounds(AppSettings.WindowSettings ws)
@@ -145,12 +176,53 @@ namespace OverlayNotepad
             Application.Current.Shutdown();
         }
 
+        private void Window_StateChanged(object sender, System.EventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+                this.ShowInTaskbar = false;
+            }
+        }
+
         private void AlwaysOnTopMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = sender as MenuItem;
             this.Topmost = menuItem.IsChecked;
+            _trayIconManager?.UpdateAlwaysOnTopState(this.Topmost);
             SettingsManager.Instance.Current.Topmost = this.Topmost;
             SettingsManager.Instance.Save();
+        }
+
+        // --- 트레이 이벤트 핸들러 ---
+
+        private void OnTrayToggleVisibility(object sender, System.EventArgs e)
+        {
+            if (!this.IsVisible || this.WindowState == WindowState.Minimized)
+            {
+                this.Show();
+                this.WindowState = WindowState.Normal;
+                this.ShowInTaskbar = true;
+                this.Activate();
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+            }
+        }
+
+        private void OnTrayAlwaysOnTopToggle(object sender, System.EventArgs e)
+        {
+            this.Topmost = !this.Topmost;
+            _trayIconManager?.UpdateAlwaysOnTopState(this.Topmost);
+            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
+            SettingsManager.Instance.Current.Topmost = this.Topmost;
+            SettingsManager.Instance.Save();
+        }
+
+        private void OnTrayExit(object sender, System.EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void BackgroundTransparentMenuItem_Click(object sender, RoutedEventArgs e)
@@ -216,12 +288,16 @@ namespace OverlayNotepad
             var family = new FontFamily(fontName);
             MainTextBox.FontFamily = family;
             OutlinedText.FontFamily = family;
+            SettingsManager.Instance.Current.Font.Family = fontName;
+            SettingsManager.Instance.Save();
         }
 
         private void ApplyFontSize(double size)
         {
             MainTextBox.FontSize = size;
             OutlinedText.FontSize = size;
+            SettingsManager.Instance.Current.Font.Size = size;
+            SettingsManager.Instance.Save();
         }
 
         private void ApplyFontColor(string hex)
@@ -233,6 +309,8 @@ namespace OverlayNotepad
             // 테두리 OFF 상태면 TextBox Foreground도 변경
             if (!TextEffectCurrent.OutlineEnabled)
                 MainTextBox.Foreground = brush;
+            SettingsManager.Instance.Current.Font.Color = hex;
+            SettingsManager.Instance.Save();
         }
 
         private void InitializeFontColorMenu()
@@ -354,5 +432,11 @@ namespace OverlayNotepad
 
         // 비정상 종료 시 App.xaml.cs에서 호출
         public string GetMemoText() => MainTextBox?.Text ?? string.Empty;
+
+        public void EmergencyDisposeTray()
+        {
+            try { _trayIconManager?.Dispose(); _trayIconManager = null; }
+            catch { }
+        }
     }
 }
