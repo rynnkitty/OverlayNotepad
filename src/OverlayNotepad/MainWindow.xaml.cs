@@ -75,6 +75,7 @@ namespace OverlayNotepad
 
             // 색상 서브메뉴 동적 생성
             InitializeFontColorMenu();
+            InitializeOutlineColorMenu();
 
             // TrayIconManager 초기화
             _trayIconManager = new TrayIconManager();
@@ -379,22 +380,26 @@ namespace OverlayNotepad
             if (persist) SettingsManager.Instance.Save();
         }
 
-        private void InitializeFontColorMenu()
+        private void InitializeColorMenu(ItemsControl menu, RoutedEventHandler presetHandler, RoutedEventHandler customHandler)
         {
-            FontColorMenu.Items.Clear();
+            menu.Items.Clear();
             foreach (var (name, hex) in FontHelper.GetPresetColors())
             {
-                var rect = new Rectangle { Width = 12, Height = 12, Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)) };
+                var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+                brush.Freeze();
+                var rect = new Rectangle { Width = 12, Height = 12, Fill = brush };
                 var item = new MenuItem { Header = name, Tag = hex, Icon = rect };
-                item.Click += ColorPreset_Click;
-                FontColorMenu.Items.Add(item);
+                item.Click += presetHandler;
+                menu.Items.Add(item);
             }
-            var sep = new Separator();
-            FontColorMenu.Items.Add(sep);
+            menu.Items.Add(new Separator());
             var customItem = new MenuItem { Header = "사용자 지정..." };
-            customItem.Click += ColorDialog_Click;
-            FontColorMenu.Items.Add(customItem);
+            customItem.Click += customHandler;
+            menu.Items.Add(customItem);
         }
+
+        private void InitializeFontColorMenu()
+            => InitializeColorMenu(FontColorMenu, ColorPreset_Click, ColorDialog_Click);
 
         private void FontFamilyMenu_SubmenuOpened(object sender, RoutedEventArgs e)
         {
@@ -487,9 +492,76 @@ namespace OverlayNotepad
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     var c = dialog.Color;
-                    ApplyFontColor(string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B));
+                    ApplyFontColor(ColorToHex(Color.FromRgb(c.R, c.G, c.B)));
                 }
             }
+        }
+
+        private void ThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleTheme();
+            UpdateThemeMenuHeader();
+        }
+
+        private void UpdateThemeMenuHeader()
+        {
+            ThemeMenuItem.Header = ThemeManager.Instance.CurrentThemeName == "dark"
+                ? "테마: 다크 -> 라이트"
+                : "테마: 라이트 -> 다크";
+        }
+
+        private void InitializeOutlineColorMenu()
+            => InitializeColorMenu(OutlineColorMenu, OutlineColorPreset_Click, OutlineColorDialog_Click);
+
+        private void ApplyOutlineColor(string hex)
+        {
+            var color = (Color)ColorConverter.ConvertFromString(hex);
+            var brush = new SolidColorBrush(color);
+            brush.Freeze();
+            OutlinedText.OutlineBrush = brush;
+            SettingsManager.Instance.Current.TextEffect.OutlineColor = hex;
+            SettingsManager.Instance.Save();
+        }
+
+        private void OutlineColorPreset_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mi && mi.Tag is string hex)
+                ApplyOutlineColor(hex);
+        }
+
+        private void OutlineColorDialog_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true })
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    var c = dialog.Color;
+                    ApplyOutlineColor(ColorToHex(Color.FromRgb(c.R, c.G, c.B)));
+                }
+            }
+        }
+
+        private void MinimizeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            var settings = SettingsManager.Instance.Current;
+            SyncMenuCheckedStates(settings);
+            UpdateThemeMenuHeader();
+
+            string currentSize = MainTextBox.FontSize.ToString();
+            foreach (object item in FontSizeMenu.Items)
+            {
+                if (item is MenuItem mi)
+                    mi.IsChecked = (mi.Tag as string) == currentSize;
+            }
+
+            AutoSaveStatusMenuItem.Header = _autoSaveManager?.HasUnsavedChanges == true
+                ? "저장 대기 중..."
+                : "자동 저장됨";
         }
 
         // 비정상 종료 시 App.xaml.cs에서 호출
