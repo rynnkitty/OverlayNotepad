@@ -1,20 +1,21 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T18:00:00",
+  "lastUpdated": "2026-04-17T00:00:00",
   "phases": [
     {
       "phase": 1,
       "title": "WPF 기본 윈도우 + 투명 배경 + 텍스트 입력",
-      "status": "planned",
+      "status": "in_progress",
       "document": "docs/phase/phase1/phase1.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "WPF 프로젝트 구조 + 투명 윈도우 + 기본 텍스트 입력",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase1-sprint1",
           "document": "docs/phase/phase1/sprint1/sprint1.md",
-          "progress": { "total": 3, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint1",
+          "progress": { "total": 3, "completed": 3 },
           "tasks": [
             {
               "id": "task1",
@@ -22,8 +23,8 @@
               "path": "docs/phase/phase1/sprint1/task1/task1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["85ef77b"]
             },
             {
               "id": "task2",
@@ -31,8 +32,8 @@
               "path": "docs/phase/phase1/sprint1/task2/task2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["73b4189"]
             },
             {
               "id": "task3",
@@ -40,8 +41,8 @@
               "path": "docs/phase/phase1/sprint1/task3/task3.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["562a557"]
             }
           ]
         },
