@@ -8,7 +8,9 @@
         MinHeight="150"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent">
+        Background="Transparent"
+        FocusManager.FocusedElement="{Binding ElementName=MainTextBox}"
+        Loaded="Window_Loaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"
                       ResizeBorderThickness="8"
@@ -31,5 +33,19 @@
                 </Style>
             </Border.Style>
         </Border>
+
+        <!-- 텍스트 입력 영역 (드래그 영역 아래 전체) -->
+        <TextBox x:Name="MainTextBox"
+                 Margin="0,12,0,0"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"
+                 FontFamily="맑은 고딕"
+                 FontSize="14"
+                 Foreground="#FFFFFF"
+                 CaretBrush="#FFFFFF" />
     </Grid>
 </Window>
