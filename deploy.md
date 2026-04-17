@@ -5,13 +5,13 @@
 > - **sprint-review** 에이전트가 코드 리뷰와 자동 검증 결과를 이 파일에 기록합니다.
 > - 완료된 항목은 `✅`, 미완료 항목은 `⬜`로 표시합니다.
 
-### Phase 1 Sprint 2: 투명도 모드 + Always on Top + 컨텍스트 메뉴 골격 (2026-04-17)
+### Phase 2 Sprint 1: 텍스트 테두리 및 그림자 효과 (2026-04-17)
 
-PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint2 (사용자가 GitHub 웹에서 수동 생성 필요)
-- 브랜치: `phase1-sprint2` → `develop`
-- 제목(권장): `feat: Sprint 2 완료 - 투명도 모드 + Always on Top + 컨텍스트 메뉴`
+PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint1 (사용자가 GitHub 웹에서 수동 생성 필요)
+- 브랜치: `phase2-sprint1` → `develop`
+- 제목(권장): `feat: Sprint 1 완료 - 텍스트 테두리 및 그림자 효과`
 
-- ⬜ GitHub 웹에서 PR 생성 (phase1-sprint2 → develop)
+- ⬜ GitHub 웹에서 PR 생성 (phase2-sprint1 → develop)
 
 **코드 리뷰:**
 - ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
@@ -20,8 +20,8 @@ PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint2
 - ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
 
 **수동 검증 필요 항목:**
-- ⬜ 사용자가 GitHub 웹에서 PR 생성 (phase1-sprint2 → develop)
-- ⬜ UI 시각적 품질 최종 판단 (투명도 단계별 표시, 컨텍스트 메뉴 레이아웃)
+- ⬜ 사용자가 GitHub 웹에서 PR 생성 (phase2-sprint1 → develop)
+- ⬜ 텍스트 테두리/그림자 효과 시각적 품질 최종 판단 (밝은/어두운 배경 가독성)
 - ⬜ PR 머지 후 develop 브랜치 로컬 동기화
 
 ---
