@@ -1,20 +1,21 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T18:00:00",
+  "lastUpdated": "2026-04-17T23:59:00",
   "phases": [
     {
       "phase": 1,
       "title": "WPF 기본 윈도우 + 투명 배경 + 텍스트 입력",
-      "status": "planned",
+      "status": "completed",
       "document": "docs/phase/phase1/phase1.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "WPF 프로젝트 구조 + 투명 윈도우 + 기본 텍스트 입력",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase1-sprint1",
           "document": "docs/phase/phase1/sprint1/sprint1.md",
-          "progress": { "total": 3, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint1",
+          "progress": { "total": 3, "completed": 3 },
           "tasks": [
             {
               "id": "task1",
@@ -22,8 +23,8 @@
               "path": "docs/phase/phase1/sprint1/task1/task1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["85ef77b"]
             },
             {
               "id": "task2",
@@ -31,8 +32,8 @@
               "path": "docs/phase/phase1/sprint1/task2/task2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["73b4189"]
             },
             {
               "id": "task3",
@@ -40,18 +41,19 @@
               "path": "docs/phase/phase1/sprint1/task3/task3.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["562a557"]
             }
           ]
         },
         {
           "sprint": 2,
           "title": "투명도 모드 + Always on Top + 컨텍스트 메뉴 골격",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase1-sprint2",
           "document": "docs/phase/phase1/sprint2/sprint2.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint2",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
@@ -59,7 +61,7 @@
               "path": "docs/phase/phase1/sprint2/task1/task1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -68,7 +70,7 @@
               "path": "docs/phase/phase1/sprint2/task2/task2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -77,7 +79,7 @@
               "path": "docs/phase/phase1/sprint2/task3/task3.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -86,7 +88,7 @@
               "path": "docs/phase/phase1/sprint2/task4/task4.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -95,7 +97,7 @@
               "path": "docs/phase/phase1/sprint2/task5/task5.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]
@@ -105,51 +107,52 @@
     {
       "phase": 2,
       "title": "텍스트 테두리/그림자 + 자동 저장 + 윈도우 관리",
-      "status": "planned",
+      "status": "completed",
       "document": "docs/phase/phase2/phase2.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "텍스트 테두리 및 그림자 효과",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase2-sprint1",
           "document": "docs/phase/phase2/sprint1/sprint1.md",
-          "progress": { "total": 4, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint1",
+          "progress": { "total": 4, "completed": 4 },
           "tasks": [
             {
               "id": "task1",
               "title": "TextEffectSettings 모델 + OutlinedTextControl 커스텀 컨트롤",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task2",
               "title": "DropShadowEffect + MainWindow 이중 레이어 통합",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task3",
               "title": "테두리/그림자 토글 + 컨텍스트 메뉴 연동",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task4",
               "title": "통합 검증 + 가독성 테스트 + 엣지 케이스",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]
@@ -157,54 +160,55 @@
         {
           "sprint": 2,
           "title": "설정 관리 + 자동 저장 + 윈도우 관리",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase2-sprint2",
           "document": "docs/phase/phase2/sprint2/sprint2.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint2",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
               "title": "AppSettings 모델 + JSON 직렬화 유틸리티",
-              "path": null,
+              "path": "docs/phase/phase2/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task2",
               "title": "SettingsManager (로드/저장/손상 복원)",
-              "path": null,
+              "path": "docs/phase/phase2/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task3",
               "title": "AutoSaveManager (디바운스 자동 저장)",
-              "path": null,
+              "path": "docs/phase/phase2/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task4",
               "title": "윈도우 위치/크기 저장 및 복원 + 화면 범위 보정",
-              "path": null,
+              "path": "docs/phase/phase2/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task5",
               "title": "비정상 종료 대응 + MainWindow 통합 + 최종 검증",
-              "path": null,
+              "path": "docs/phase/phase2/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]
@@ -214,106 +218,108 @@
     {
       "phase": 3,
       "title": "시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성",
-      "status": "planned",
+      "status": "completed",
       "document": "docs/phase/phase3/phase3.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "시스템 트레이 + 서식 지원",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase3-sprint1",
           "document": "docs/phase/phase3/sprint1/sprint1.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint1",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
               "title": "TrayIconManager (시스템 트레이 아이콘 + 트레이 메뉴)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["32f9772"]
             },
             {
               "id": "task2",
               "title": "AppSettings 서식 필드 확장 + 글꼴 유효성 헬퍼",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["689c914"]
             },
             {
               "id": "task3",
               "title": "서식 변경 컨텍스트 메뉴 서브메뉴 (글꼴/크기/색상)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["9871d6d"]
             },
             {
               "id": "task4",
               "title": "MainWindow 통합 (트레이 + 서식 연동 + 설정 영속화)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["10202b2"]
             },
             {
               "id": "task5",
               "title": "통합 검증 + 엣지 케이스",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["567307a"]
             }
           ]
         },
         {
           "sprint": 2,
           "title": "다크/라이트 테마 + 컨텍스트 메뉴 완성",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase3-sprint2",
           "document": "docs/phase/phase3/sprint2/sprint2.md",
-          "progress": { "total": 4, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint2",
+          "progress": { "total": 4, "completed": 4 },
           "tasks": [
             {
               "id": "task1",
               "title": "ThemeDefinition 모델 + ThemeManager 생성",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["5c33ffa"]
             },
             {
               "id": "task2",
-              "title": "테마 전환 기능 + MainWindow 통합",
-              "path": null,
+              "title": "테마 전환 기능 + MainWindow 통합 + Sprint 1 미해결 개선",
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["b2f39a9"]
             },
             {
               "id": "task3",
               "title": "컨텍스트 메뉴 최종 구성 (PRD F11 완성)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["e87c6a3"]
             },
             {
               "id": "task4",
               "title": "통합 검증 + 테마/메뉴 엣지 케이스 + Phase 3 DoD 확인",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]

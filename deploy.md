@@ -5,18 +5,60 @@
 > - **sprint-review** 에이전트가 코드 리뷰와 자동 검증 결과를 이 파일에 기록합니다.
 > - 완료된 항목은 `✅`, 미완료 항목은 `⬜`로 표시합니다.
 
-### Hotfix: Claude Code 설정 파일 컨텍스트 중복/상충 정리 (2026-03-28)
+### Phase 3 Sprint 2: 다크/라이트 테마 + 컨텍스트 메뉴 완성 (2026-04-17)
 
-PR: https://github.com/frogy95/choiji-guide-big/pull/3
+PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint2 (사용자가 GitHub 웹에서 수동 생성 필요)
+- 브랜치: `phase3-sprint2` → `develop`
+- 제목(권장): `feat: Sprint 2 완료 - 다크/라이트 테마 + 컨텍스트 메뉴 완성 (PRD F11)`
 
-- ✅ 자동 검증 완료 항목:
-  - pytest: 해당 없음 (설정/문서 파일만 변경)
-  - 타겟 API 검증: 해당 없음 (코드 변경 없음)
-  - Playwright 타겟 검증: 해당 없음 (UI 변경 없음)
+**코드 리뷰 결과 (2026-04-17):**
+- ✅ 보안 이슈 없음
+- ✅ Critical/High 이슈 없음
+- Medium 이슈 0건
+- Low 이슈 1건: `BackgroundTransparentMenuItem_Click` 등 4개 핸들러에서 `sender as MenuItem` null 체크 누락 — 실제 런타임 위험 낮음, Phase 4 Sprint 이후 개선 권장, phase3.md 미해결 사항에 기록 완료
 
-- ⬜ 수동 검증 필요 항목:
-  - Docker 미실행으로 자동 검증 미수행 — main merge 후 `docker compose up --build` 로 재시작 시 설정 파일이 정상 로드되는지 확인
-  - restart.md의 `cd /path &&` 패턴 제거 후 `/restart` 커맨드 정상 동작 확인 (Docker 실행 환경에서)
+**자동 검증 결과 (2026-04-17):**
+- ✅ MSBuild Debug 빌드: 경고 0, 오류 0
+- ✅ MSBuild Release 빌드: 경고 0, 오류 0
+- ⬜ Docker 환경 없음 — WPF 데스크톱 앱, pytest/Playwright/API curl 항목 해당 없음
+
+**Phase 문서 반영 (2026-04-17):**
+- ✅ phase3.md Sprint 분할 계획 테이블: Sprint 2 ✅ 표시 추가
+- ✅ phase3.md Sprint 2 상세 섹션: ✅ 완료 + PR 정보 기록
+- ✅ phase3.md 미해결 사항: 테마 전환 깜빡임, FontDialog Dispose, XAML IsChecked 불일치 해결 표시
+- ✅ phase3.md 완료 기준: 다크/라이트 테마, 테마 전환, 컨텍스트 메뉴 완성 → ✅ 완료 변경
+
+**수동 검증 필요 항목:**
+- ⬜ GitHub 웹에서 PR 생성 (phase3-sprint2 → develop)
+- ⬜ 앱 실행 시 기본 다크 테마 적용 확인 (흰색 글자, #1E1E1E 배경, 검정 테두리)
+- ⬜ 컨텍스트 메뉴 > 테마 전환으로 다크 ↔ 라이트 전환 동작 확인
+- ⬜ 테마 전환 시 모든 색상 일괄 변경 (글자색/배경색/테두리색/드래그바)
+- ⬜ 테마 전환 후 텍스트 내용 유지 확인
+- ⬜ 테마 설정이 settings.json에 저장되어 재실행 시 복원 확인
+- ⬜ 컨텍스트 메뉴 > 테두리 색상 서브메뉴에서 색상 변경 동작 확인
+- ⬜ 컨텍스트 메뉴 > 자동저장 상태 표시 ("자동 저장됨" / "저장 대기 중...") 확인
+- ⬜ 컨텍스트 메뉴 > 최소화 클릭 시 트레이로 숨김 확인
+- ⬜ PRD F11 모든 항목이 컨텍스트 메뉴에 표시 확인 (Click-Through 제외)
+- ⬜ 메뉴 IsChecked 상태가 실제 settings 값과 일치 확인
+- ⬜ 시작 시간 2초 이내 확인 (작업 관리자 / Stopwatch)
+- ⬜ 메모리 사용량 80MB 이하 확인 (작업 관리자)
+- ⬜ PR 머지 후 develop 브랜치 로컬 동기화
+
+---
+
+### Phase 3 Sprint 1: 시스템 트레이 + 서식 지원 (2026-04-17)
+
+(아카이빙됨: docs/deploy-history/2026-04-17.md)
+- ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
+- ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
+
+---
+
+### Phase 2 Sprint 2: 설정 관리 + 자동 저장 + 윈도우 관리 (2026-04-17)
+
+(아카이빙됨: docs/deploy-history/2026-04-17.md)
+- ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
+- ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
 
 ---
 
