@@ -14,8 +14,10 @@
 
 ## 스프린트 현황
 
-- [Phase 1 Sprint 1 계획](project_phase1_sprint1.md) — WPF 프로젝트 구조 + 투명 윈도우 + 텍스트 입력, 계획 완료
-- [현재 스프린트 상태](project_sprint_status.md) — Phase 1~4 전체 Sprint 계획 수립 완료, 구현 시작 전
+- [Phase 1 Sprint 1 계획](project_phase1_sprint1.md) — WPF 프로젝트 구조 + 투명 윈도우 + 텍스트 입력, **구현 완료 (2026-04-17)**
+- Phase 1 Sprint 2 — 투명도 모드 + Always on Top + 컨텍스트 메뉴 골격, **구현 완료 (2026-04-17)**
+- [현재 스프린트 상태](project_sprint_status.md) — Phase 1 전체 완료, Phase 2~4 계획 수립 완료
+- 다음 스프린트: Phase 2 Sprint 1 (텍스트 테두리/그림자 효과)
 - [Phase 2 Sprint 1 계획](project_phase2_sprint1.md) — 텍스트 테두리/그림자 효과, 이중 레이어 구조, 계획 완료
 - [Phase 2 Sprint 2 계획](project_phase2_sprint2.md) — 설정 관리 + 자동 저장 + 윈도우 관리, 계획 완료
 - [Phase 3 Sprint 1 계획](project_phase3_sprint1.md) — 시스템 트레이 + 서식 지원 (글꼴/크기/색상), 계획 완료
