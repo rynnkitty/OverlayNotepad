@@ -406,6 +406,10 @@ git commit -m "chore(phase4-sprint2): task3 - Release 빌드 설정 확인 + 단
      - 자동 저장 정상 동작 확인
   8. 빈 텍스트 상태에서 모든 기능 동작
      - 테두리/그림자 효과가 오류 없이 동작 (빈 문자열 처리)
+  9. BackgroundTransparentMenuItem_Click null 체크 누락 (Phase 4 문서 미해결 사항)
+     - `sender as MenuItem` 패턴에서 null 가드 추가 필요
+     - MainWindow.xaml.cs 323행: `MenuItem menuItem = sender as MenuItem;` 뒤에 null 체크 없음
+     - 수정: `if (menuItem == null) return;` 추가
 ```
 
 **Step 6: 발견된 엣지 케이스 수정**
@@ -425,7 +429,7 @@ git commit -m "fix(phase4-sprint2): task4 - 전체 기능 통합 테스트 + 엣
 - ⬜ Click-Through 7가지 시나리오 통과
 - ⬜ 전체 기능 연동 7가지 시나리오 통과
 - ⬜ 컨텍스트/트레이 메뉴 6가지 시나리오 통과
-- ⬜ 알려진 엣지 케이스 8가지 확인 + 수정
+- ⬜ 알려진 엣지 케이스 9가지 확인 + 수정
 - ⬜ MSBuild 빌드 성공
 
 ---

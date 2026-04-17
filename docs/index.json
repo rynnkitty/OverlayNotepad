@@ -399,8 +399,8 @@
             {
               "id": "task1",
               "title": "DPI 인식 + 앱 아이콘 설정",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint2/sprint2.md",
+              "testPlan": "MSBuild 빌드 성공 + app.manifest dpiAware=true + 앱 아이콘 표시",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -408,8 +408,8 @@
             {
               "id": "task2",
               "title": "성능 최적화 + 불필요 자원 정리",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint2/sprint2.md",
+              "testPlan": "메모리 80MB 이하 + CPU 0% + 시작 2초 이내 + 리소스 정상 해제",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -417,8 +417,8 @@
             {
               "id": "task3",
               "title": "단일 EXE 빌드 + Release 설정 확인",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint2/sprint2.md",
+              "testPlan": "Release 빌드 성공 + 단일 EXE 독립 실행 가능",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -426,8 +426,8 @@
             {
               "id": "task4",
               "title": "전체 기능 통합 테스트 + 엣지 케이스 수정",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint2/sprint2.md",
+              "testPlan": "핫키 5시나리오 + Click-Through 7시나리오 + 연동 7시나리오 + 메뉴 6시나리오 + 엣지케이스 9종",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -435,8 +435,8 @@
             {
               "id": "task5",
               "title": "Phase 4 DoD 확인 + 프로젝트 전체 DoD 확인",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint2/sprint2.md",
+              "testPlan": "Phase 4 DoD 9항목 + PRD F1~F11 + 비기능 요구사항 7항목",
               "testResult": null,
               "status": "planned",
               "commits": []
