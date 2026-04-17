@@ -79,6 +79,7 @@
     <Compile Include="Services\ThemeManager.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Services\HotkeyService.cs" />
+    <Compile Include="Services\ClickThroughService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
