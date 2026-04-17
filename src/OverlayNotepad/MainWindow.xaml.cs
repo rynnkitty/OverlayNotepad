@@ -652,6 +652,11 @@ namespace OverlayNotepad
             this.WindowState = WindowState.Minimized;
         }
 
+        private void LinkMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://kimkitty.net");
+        }
+
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)
         {
             var settings = SettingsManager.Instance.Current;

@@ -65,6 +65,8 @@
             <MenuItem x:Name="ClickThroughMenuItem" Header="Click-Through" IsCheckable="True" IsChecked="False" />
             <MenuItem Header="최소화" Click="MinimizeMenuItem_Click" />
             <MenuItem Header="종료" Click="ExitMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="kimkitty.net" Click="LinkMenuItem_Click" />
         </ContextMenu>
     </Window.ContextMenu>
     <Border x:Name="MainBackground" Background="Transparent">
