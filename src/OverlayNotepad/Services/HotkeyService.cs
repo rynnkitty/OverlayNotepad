@@ -21,6 +21,7 @@ namespace OverlayNotepad.Services
         public event EventHandler ToggleClickThroughRequested;
 
         public bool IsClickThroughHotkeyRegistered => _clickThroughHotkeyRegistered;
+        public IntPtr Handle => _hwnd;
 
         public void Initialize(Window window)
         {
