@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 
 namespace OverlayNotepad
 {
@@ -7,6 +8,11 @@ namespace OverlayNotepad
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void DragArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
     }
 }
