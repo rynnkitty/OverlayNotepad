@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T23:00:00",
+  "lastUpdated": "2026-04-17T23:30:00",
   "phases": [
     {
       "phase": 1,
@@ -218,61 +218,62 @@
     {
       "phase": 3,
       "title": "시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성",
-      "status": "planned",
+      "status": "in_progress",
       "document": "docs/phase/phase3/phase3.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "시스템 트레이 + 서식 지원",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase3-sprint1",
           "document": "docs/phase/phase3/sprint1/sprint1.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint1",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
               "title": "TrayIconManager (시스템 트레이 아이콘 + 트레이 메뉴)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["32f9772"]
             },
             {
               "id": "task2",
               "title": "AppSettings 서식 필드 확장 + 글꼴 유효성 헬퍼",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["689c914"]
             },
             {
               "id": "task3",
               "title": "서식 변경 컨텍스트 메뉴 서브메뉴 (글꼴/크기/색상)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["9871d6d"]
             },
             {
               "id": "task4",
               "title": "MainWindow 통합 (트레이 + 서식 연동 + 설정 영속화)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["10202b2"]
             },
             {
               "id": "task5",
               "title": "통합 검증 + 엣지 케이스",
-              "path": null,
+              "path": "docs/phase/phase3/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["567307a"]
             }
           ]
         },

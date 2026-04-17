@@ -38,7 +38,23 @@
             <MenuItem x:Name="ShadowMenuItem" Header="텍스트 그림자" IsCheckable="True" IsChecked="True"
                       Click="ShadowMenuItem_Click" />
             <Separator />
-            <MenuItem Header="항상 위에" IsCheckable="True" IsChecked="True"
+            <MenuItem x:Name="FontFamilyMenu" Header="글꼴" SubmenuOpened="FontFamilyMenu_SubmenuOpened">
+                <MenuItem Header="로딩 중..." IsEnabled="False" />
+            </MenuItem>
+            <MenuItem x:Name="FontSizeMenu" Header="글자 크기">
+                <MenuItem Header="10" Tag="10" Click="FontSizePreset_Click" />
+                <MenuItem Header="12" Tag="12" Click="FontSizePreset_Click" />
+                <MenuItem Header="14" Tag="14" IsChecked="True" Click="FontSizePreset_Click" />
+                <MenuItem Header="16" Tag="16" Click="FontSizePreset_Click" />
+                <MenuItem Header="20" Tag="20" Click="FontSizePreset_Click" />
+                <MenuItem Header="24" Tag="24" Click="FontSizePreset_Click" />
+                <MenuItem Header="32" Tag="32" Click="FontSizePreset_Click" />
+                <Separator />
+                <MenuItem Header="직접 입력..." Click="FontSizeCustom_Click" />
+            </MenuItem>
+            <MenuItem x:Name="FontColorMenu" Header="글자 색상" />
+            <Separator />
+            <MenuItem x:Name="AlwaysOnTopMenuItem" Header="항상 위에" IsCheckable="True" IsChecked="True"
                       Click="AlwaysOnTopMenuItem_Click" />
             <Separator />
             <MenuItem Header="종료" Click="ExitMenuItem_Click" />

@@ -29,12 +29,12 @@ namespace OverlayNotepad
         {
             try
             {
-                SettingsManager.Instance.Save();
-
                 if (MainWindow is MainWindow mainWin)
                 {
+                    mainWin.EmergencyDisposeTray();
                     SettingsManager.Instance.SaveMemo(mainWin.GetMemoText());
                 }
+                SettingsManager.Instance.Save();
             }
             catch
             {
