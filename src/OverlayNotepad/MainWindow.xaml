@@ -9,6 +9,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
+        Topmost="True"
+        Opacity="0.8"
         FocusManager.FocusedElement="{Binding ElementName=MainTextBox}"
         Loaded="Window_Loaded">
     <WindowChrome.WindowChrome>
@@ -17,6 +19,25 @@
                       CornerRadius="0"
                       GlassFrameThickness="0" />
     </WindowChrome.WindowChrome>
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="투명도" x:Name="OpacityMenu">
+                <MenuItem Header="20%" Tag="0.2" Click="OpacityMenuItem_Click" />
+                <MenuItem Header="40%" Tag="0.4" Click="OpacityMenuItem_Click" />
+                <MenuItem Header="60%" Tag="0.6" Click="OpacityMenuItem_Click" />
+                <MenuItem Header="80%" Tag="0.8" IsChecked="True" Click="OpacityMenuItem_Click" />
+                <MenuItem Header="100%" Tag="1.0" Click="OpacityMenuItem_Click" />
+            </MenuItem>
+            <Separator />
+            <MenuItem Header="배경 투명 모드" IsCheckable="True" IsChecked="True"
+                      Click="BackgroundTransparentMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="항상 위에" IsCheckable="True" IsChecked="True"
+                      Click="AlwaysOnTopMenuItem_Click" />
+            <Separator />
+            <MenuItem Header="종료" Click="ExitMenuItem_Click" />
+        </ContextMenu>
+    </Window.ContextMenu>
     <Grid>
         <!-- 드래그 영역 (상단 12px) -->
         <Border Height="12"
@@ -46,6 +67,7 @@
                  FontFamily="맑은 고딕"
                  FontSize="14"
                  Foreground="#FFFFFF"
-                 CaretBrush="#FFFFFF" />
+                 CaretBrush="#FFFFFF"
+                 ContextMenu="{Binding ContextMenu, RelativeSource={RelativeSource AncestorType=Window}}" />
     </Grid>
 </Window>
