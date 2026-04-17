@@ -12,6 +12,14 @@ namespace OverlayNotepad
             base.OnStartup(e);
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             this.DispatcherUnhandledException += OnDispatcherUnhandledException;
+#if DEBUG
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                sw.Stop();
+                System.Diagnostics.Debug.WriteLine($"[Startup] 초기화 완료: {sw.ElapsedMilliseconds}ms");
+            }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+#endif
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

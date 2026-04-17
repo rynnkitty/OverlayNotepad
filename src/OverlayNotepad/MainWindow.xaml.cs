@@ -14,6 +14,8 @@ namespace OverlayNotepad
     {
         private AutoSaveManager _autoSaveManager;
         private TrayIconManager _trayIconManager;
+        private HotkeyService _hotkeyService;
+        private ClickThroughService _clickThroughService;
         private bool _fontMenuInitialized = false;
 
         // 현재 설정은 SettingsManager.Instance.Current에서 참조
@@ -41,7 +43,11 @@ namespace OverlayNotepad
             if (settings.Transparency.Mode == "background")
                 this.Background = Brushes.Transparent;
             else
-                this.Background = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+            {
+                var bg = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                bg.Freeze();
+                this.Background = bg;
+            }
 
             // Topmost 복원
             this.Topmost = settings.Topmost;
@@ -68,10 +74,9 @@ namespace OverlayNotepad
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
 
-            // AutoSaveManager 시작
+            // AutoSaveManager 초기화 (타이머는 NotifyChanged() 호출 시 지연 시작)
             _autoSaveManager = new AutoSaveManager(() =>
                 SettingsManager.Instance.SaveMemo(MainTextBox.Text));
-            _autoSaveManager.Start();
 
             // 색상 서브메뉴 동적 생성
             InitializeFontColorMenu();
@@ -83,16 +88,48 @@ namespace OverlayNotepad
             try
             {
                 var iconUri = new System.Uri("pack://application:,,,/Resources/app.ico");
-                var stream = Application.GetResourceStream(iconUri);
-                if (stream != null)
-                    appIcon = new System.Drawing.Icon(stream.Stream);
+                var sri = Application.GetResourceStream(iconUri);
+                if (sri != null)
+                {
+                    using (sri.Stream)
+                        appIcon = new System.Drawing.Icon(sri.Stream);
+                }
             }
             catch { }
             _trayIconManager.Initialize(appIcon ?? System.Drawing.SystemIcons.Application);
             _trayIconManager.UpdateAlwaysOnTopState(this.Topmost);
             _trayIconManager.ToggleVisibilityRequested += OnTrayToggleVisibility;
             _trayIconManager.AlwaysOnTopToggleRequested += OnTrayAlwaysOnTopToggle;
+            _trayIconManager.ClickThroughToggleRequested += OnTrayClickThroughToggle;
             _trayIconManager.ExitRequested += OnTrayExit;
+
+            // HotkeyService 초기화 (Window.Loaded 이후 Handle이 유효)
+            _hotkeyService = new HotkeyService();
+            _hotkeyService.Initialize(this);
+            _hotkeyService.ToggleVisibilityRequested += OnHotkeyToggleVisibility;
+            _hotkeyService.ToggleClickThroughRequested += OnHotkeyToggleClickThrough;
+
+            // ClickThroughService 초기화 (HotkeyService.Handle 재사용)
+            _clickThroughService = new ClickThroughService();
+            _clickThroughService.Initialize(_hotkeyService.Handle, _hotkeyService.IsClickThroughHotkeyRegistered);
+            _clickThroughService.StateChanged += OnClickThroughStateChanged;
+
+            // 핫키 등록 실패 처리
+            var failedHotkeys = _hotkeyService.GetFailedHotkeys();
+            if (failedHotkeys.Count > 0)
+            {
+                _trayIconManager.ShowBalloonTip("핫키 등록 실패",
+                    "다음 핫키를 등록하지 못했습니다:\n" + string.Join("\n", failedHotkeys) +
+                    "\n다른 프로그램이 사용 중일 수 있습니다.");
+                if (!_hotkeyService.IsClickThroughHotkeyRegistered)
+                {
+                    _trayIconManager.SetClickThroughAvailable(false);
+                    ClickThroughMenuItem.IsEnabled = false;
+                }
+            }
+
+            // ClickThroughMenuItem Click 이벤트 연결
+            ClickThroughMenuItem.Click += ClickThroughMenuItem_Click;
 
             MainTextBox.Focus();
         }
@@ -111,6 +148,10 @@ namespace OverlayNotepad
             _autoSaveManager?.Stop();
             SettingsManager.Instance.SaveMemo(MainTextBox.Text);
             SettingsManager.Instance.Save();
+
+            // 핫키 해제
+            _hotkeyService?.Dispose();
+            _hotkeyService = null;
 
             // 트레이 아이콘 정리
             _trayIconManager?.Dispose();
@@ -164,8 +205,10 @@ namespace OverlayNotepad
             {
                 OutlinedText.Visibility = Visibility.Visible;
                 OutlinedText.OutlineThickness = fx.OutlineThickness;
-                OutlinedText.OutlineBrush = new SolidColorBrush(
-                    (Color)ColorConverter.ConvertFromString(fx.OutlineColor));
+                var outlineColor = (Color)ColorConverter.ConvertFromString(fx.OutlineColor);
+                var outlineBrush = new SolidColorBrush(outlineColor);
+                outlineBrush.Freeze();
+                OutlinedText.OutlineBrush = outlineBrush;
                 MainTextBox.Foreground = Brushes.Transparent;
             }
             else
@@ -200,6 +243,9 @@ namespace OverlayNotepad
         }
 
         private void OnTrayToggleVisibility(object sender, System.EventArgs e)
+            => ToggleWindowVisibility();
+
+        private void ToggleWindowVisibility()
         {
             if (!this.IsVisible || this.WindowState == WindowState.Minimized)
             {
@@ -219,9 +265,58 @@ namespace OverlayNotepad
             SetTopmost(!this.Topmost);
         }
 
+        private void OnTrayClickThroughToggle(object sender, System.EventArgs e)
+        {
+            _clickThroughService?.Toggle();
+        }
+
         private void OnTrayExit(object sender, System.EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void OnHotkeyToggleVisibility(object sender, System.EventArgs e)
+            => ToggleWindowVisibility();
+
+        private void OnHotkeyToggleClickThrough(object sender, System.EventArgs e)
+        {
+            _clickThroughService?.Toggle();
+        }
+
+        private void OnClickThroughStateChanged(object sender, ClickThroughChangedEventArgs e)
+        {
+            // 시각 피드백
+            ClickThroughIndicator.Visibility = e.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+            ClickThroughLabel.Visibility = e.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+
+            // 투명도 하한 강제 (20% 미만이면 조정)
+            if (e.IsEnabled)
+            {
+                double safe = ClickThroughService.EnforceOpacityFloor(this.Opacity, true);
+                if (safe != this.Opacity)
+                {
+                    this.Opacity = safe;
+                    SettingsManager.Instance.Current.Transparency.Opacity = safe;
+                    SettingsManager.Instance.Save();
+                }
+            }
+
+            // 트레이 동기화
+            _trayIconManager?.UpdateClickThroughState(e.IsEnabled);
+
+            // 컨텍스트 메뉴 동기화
+            ClickThroughMenuItem.IsChecked = e.IsEnabled;
+            SettingsManager.Instance.Current.IsClickThrough = e.IsEnabled;
+
+            // 최초 활성화 시 트레이 벌룬 안내
+            if (e.IsEnabled && e.IsFirstActivation)
+                _trayIconManager?.ShowBalloonTip("Click-Through 모드 활성화",
+                    "마우스 클릭이 뒤의 앱에 전달됩니다.\n해제: Ctrl+Shift+T 또는 트레이 메뉴");
+        }
+
+        private void ClickThroughMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _clickThroughService?.Toggle();
         }
 
         private void SetTopmost(bool value)
@@ -236,6 +331,7 @@ namespace OverlayNotepad
         private void BackgroundTransparentMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null) return;
             if (menuItem.IsChecked)
             {
                 this.Background = Brushes.Transparent;
@@ -243,7 +339,9 @@ namespace OverlayNotepad
             }
             else
             {
-                this.Background = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                var solidBg = new SolidColorBrush(Color.FromArgb(0x33, 0x00, 0x00, 0x00));
+                solidBg.Freeze();
+                this.Background = solidBg;
                 SettingsManager.Instance.Current.Transparency.Mode = "solid";
             }
             SettingsManager.Instance.Save();
@@ -251,24 +349,30 @@ namespace OverlayNotepad
 
         private void OutlineMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            TextEffectCurrent.OutlineEnabled = menuItem.IsChecked;
-            ApplyTextEffects();
-            SettingsManager.Instance.Save();
+            if (sender is MenuItem menuItem)
+            {
+                TextEffectCurrent.OutlineEnabled = menuItem.IsChecked;
+                ApplyTextEffects();
+                SettingsManager.Instance.Save();
+            }
         }
 
         private void ShadowMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            TextEffectCurrent.ShadowEnabled = menuItem.IsChecked;
-            ApplyTextEffects();
-            SettingsManager.Instance.Save();
+            if (sender is MenuItem menuItem)
+            {
+                TextEffectCurrent.ShadowEnabled = menuItem.IsChecked;
+                ApplyTextEffects();
+                SettingsManager.Instance.Save();
+            }
         }
 
         private void OpacityMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem clicked = sender as MenuItem;
-            double opacity = double.Parse(clicked.Tag.ToString());
+            if (clicked == null) return;
+            if (!double.TryParse(clicked.Tag?.ToString(), out double opacity)) return;
+            opacity = ClickThroughService.EnforceOpacityFloor(opacity, _clickThroughService?.IsEnabled == true);
             this.Opacity = opacity;
             SettingsManager.Instance.Current.Transparency.Opacity = opacity;
             SettingsManager.Instance.Save();
@@ -340,6 +444,7 @@ namespace OverlayNotepad
             AlwaysOnTopMenuItem.IsChecked = settings.Topmost;
             OutlineMenuItem.IsChecked = settings.TextEffect.OutlineEnabled;
             ShadowMenuItem.IsChecked = settings.TextEffect.ShadowEnabled;
+            ClickThroughMenuItem.IsChecked = settings.IsClickThrough;
             foreach (object item in OpacityMenu.Items)
             {
                 if (item is MenuItem mi && mi.Tag != null &&
@@ -372,6 +477,7 @@ namespace OverlayNotepad
         {
             var color = (Color)ColorConverter.ConvertFromString(hex);
             var brush = new SolidColorBrush(color);
+            brush.Freeze();
             OutlinedText.FillBrush = brush;
             MainTextBox.CaretBrush = brush;
             if (!TextEffectCurrent.OutlineEnabled)
@@ -544,6 +650,11 @@ namespace OverlayNotepad
         private void MinimizeMenuItem_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void LinkMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://kimkitty.net");
         }
 
         private void ContextMenu_Opened(object sender, RoutedEventArgs e)

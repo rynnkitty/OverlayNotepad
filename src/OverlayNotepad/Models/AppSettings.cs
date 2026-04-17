@@ -23,6 +23,9 @@ namespace OverlayNotepad.Models
         [DataMember(Name = "theme")]
         public string Theme { get; set; }
 
+        // 런타임 전용 — 재시작 시 항상 false (저장하지 않음)
+        public bool IsClickThrough { get; set; }
+
         public static AppSettings CreateDefault()
         {
             return new AppSettings

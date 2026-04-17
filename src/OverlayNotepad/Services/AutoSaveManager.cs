@@ -22,7 +22,12 @@ namespace OverlayNotepad.Services
 
         public bool HasUnsavedChanges => _isDirty;
 
-        public void Start() => _timer.Start();
+        // 타이머는 NotifyChanged() 호출 시 자동 시작됩니다. 직접 Start() 불필요.
+        public void Start()
+        {
+            if (_isDirty && !_timer.IsEnabled)
+                _timer.Start();
+        }
 
         public void Stop() => _timer.Stop();
 
@@ -30,6 +35,8 @@ namespace OverlayNotepad.Services
         {
             _lastChangeTime = DateTime.Now;
             _isDirty = true;
+            if (!_timer.IsEnabled)
+                _timer.Start();
         }
 
         public void SaveNow()
@@ -47,6 +54,7 @@ namespace OverlayNotepad.Services
             {
                 _saveAction?.Invoke();
                 _isDirty = false;
+                _timer.Stop();
             }
         }
     }
