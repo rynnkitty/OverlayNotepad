@@ -67,6 +67,7 @@
                  FontFamily="맑은 고딕"
                  FontSize="14"
                  Foreground="#FFFFFF"
-                 CaretBrush="#FFFFFF" />
+                 CaretBrush="#FFFFFF"
+                 ContextMenu="{Binding ContextMenu, RelativeSource={RelativeSource AncestorType=Window}}" />
     </Grid>
 </Window>
