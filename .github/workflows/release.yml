@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '릴리즈 버전 (예: v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v4
+
+      - name: MSBuild 설정
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Release 빌드
+        run: |
+          msbuild src/OverlayNotepad/OverlayNotepad.csproj `
+            /p:Configuration=Release `
+            /p:Platform=AnyCPU `
+            /m
+
+      - name: 버전 추출
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ZIP 패키징
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.tag }}"
+          $srcDir = "src/OverlayNotepad/bin/Release"
+          $zipName = "OverlayNotepad-$version-win-x64.zip"
+          Compress-Archive -Path "$srcDir/*" -DestinationPath $zipName
+          echo "ZIP_NAME=$zipName" >> $env:GITHUB_ENV
+
+      - name: GitHub Release 생성
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: OverlayNotepad ${{ steps.version.outputs.tag }}
+          body: |
+            ## OverlayNotepad ${{ steps.version.outputs.tag }}
+
+            ### 설치 방법
+            1. 아래 `OverlayNotepad-*-win-x64.zip` 파일을 다운로드합니다.
+            2. 압축을 풀고 `OverlayNotepad.exe`를 실행합니다.
+            3. 별도 설치 불필요 — .NET Framework 4.8이 설치된 Windows에서 바로 실행됩니다.
+
+            ### 시스템 요구사항
+            - Windows 10/11
+            - .NET Framework 4.8 (Windows 10 이상 기본 포함)
+          files: ${{ env.ZIP_NAME }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
