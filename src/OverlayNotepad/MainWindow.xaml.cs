@@ -331,6 +331,7 @@ namespace OverlayNotepad
         private void BackgroundTransparentMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem menuItem = sender as MenuItem;
+            if (menuItem == null) return;
             if (menuItem.IsChecked)
             {
                 this.Background = Brushes.Transparent;
@@ -348,24 +349,29 @@ namespace OverlayNotepad
 
         private void OutlineMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            TextEffectCurrent.OutlineEnabled = menuItem.IsChecked;
-            ApplyTextEffects();
-            SettingsManager.Instance.Save();
+            if (sender is MenuItem menuItem)
+            {
+                TextEffectCurrent.OutlineEnabled = menuItem.IsChecked;
+                ApplyTextEffects();
+                SettingsManager.Instance.Save();
+            }
         }
 
         private void ShadowMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            TextEffectCurrent.ShadowEnabled = menuItem.IsChecked;
-            ApplyTextEffects();
-            SettingsManager.Instance.Save();
+            if (sender is MenuItem menuItem)
+            {
+                TextEffectCurrent.ShadowEnabled = menuItem.IsChecked;
+                ApplyTextEffects();
+                SettingsManager.Instance.Save();
+            }
         }
 
         private void OpacityMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem clicked = sender as MenuItem;
-            if (!double.TryParse(clicked.Tag.ToString(), out double opacity)) return;
+            if (clicked == null) return;
+            if (!double.TryParse(clicked.Tag?.ToString(), out double opacity)) return;
             opacity = ClickThroughService.EnforceOpacityFloor(opacity, _clickThroughService?.IsEnabled == true);
             this.Opacity = opacity;
             SettingsManager.Instance.Current.Transparency.Opacity = opacity;
