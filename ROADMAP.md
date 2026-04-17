@@ -18,10 +18,10 @@
 
 ## 프로젝트 현황 대시보드
 
-- 전체 진행률: Phase 2/4 완료 + Phase 3 Sprint 1~2 완료 (Phase 1 Sprint 1~2 + Phase 2 Sprint 1~2 + Phase 3 Sprint 1~2 완료)
-- 현재 Phase: Phase 4 진행 중 (Sprint 1 계획 수립 완료)
-- 완료된 스프린트: Phase 1 Sprint 1 (2026-04-17), Phase 1 Sprint 2 (2026-04-17), Phase 2 Sprint 1 (2026-04-17), Phase 2 Sprint 2 (2026-04-17), Phase 3 Sprint 1 (2026-04-17), Phase 3 Sprint 2 (2026-04-17)
-- 다음 마일스톤: Phase 4 Sprint 1 (글로벌 핫키 + Click-Through)
+- 전체 진행률: Phase 3/4 완료 + Phase 4 Sprint 1 완료 (Phase 1 Sprint 1~2 + Phase 2 Sprint 1~2 + Phase 3 Sprint 1~2 + Phase 4 Sprint 1 완료)
+- 현재 Phase: Phase 4 진행 중 (Sprint 1 완료, Sprint 2 예정)
+- 완료된 스프린트: Phase 1 Sprint 1 (2026-04-17), Phase 1 Sprint 2 (2026-04-17), Phase 2 Sprint 1 (2026-04-17), Phase 2 Sprint 2 (2026-04-17), Phase 3 Sprint 1 (2026-04-17), Phase 3 Sprint 2 (2026-04-17), Phase 4 Sprint 1 (2026-04-17)
+- 다음 마일스톤: Phase 4 Sprint 2 (최종 마무리 + 배포 준비)
 
 ## 기술 아키텍처 결정 사항
 
@@ -217,20 +217,20 @@ WPF 프로젝트를 생성하고 핵심 기반을 구축한다. 타이틀바 없
 
 ---
 
-## Phase 4: 글로벌 핫키 + Click-Through + 최종 마무리 (Sprint 1~2) 📋
+## Phase 4: 글로벌 핫키 + Click-Through + 최종 마무리 (Sprint 1~2) 🔄
 
 ### 목표
 나머지 P2-P3 기능을 구현하고 전체 품질을 다듬는다. 글로벌 핫키(F10)로 다른 앱에서도 메모장을 제어하고, Click-Through(F6) 모드로 읽기 전용 오버레이를 지원한다. 단일 EXE 배포 준비까지 완료.
 
 ### 작업 목록
-#### Sprint 1: 글로벌 핫키 + Click-Through 🔄 (2026-04-17 계획 수립)
-- RegisterHotKey Win32 API 인터롭으로 글로벌 핫키 등록
-- 표시/숨김 토글 핫키 (기본: Ctrl+Shift+N)
-- Click-Through 토글 핫키 (기본: Ctrl+Shift+T)
-- Click-Through 모드 구현 (Win32 WS_EX_TRANSPARENT 인터롭)
-- Click-Through 상태 시각적 표시 (테두리 색상 변경)
-- 트레이 메뉴에 Click-Through 토글 추가
-- 핫키 충돌 처리 (이미 등록된 경우 알림)
+#### Sprint 1: 글로벌 핫키 + Click-Through ✅ (2026-04-17 완료)
+- ✅ RegisterHotKey Win32 API 인터롭으로 글로벌 핫키 등록
+- ✅ 표시/숨김 토글 핫키 (기본: Ctrl+Shift+N)
+- ✅ Click-Through 토글 핫키 (기본: Ctrl+Shift+T)
+- ✅ Click-Through 모드 구현 (Win32 WS_EX_TRANSPARENT 인터롭)
+- ✅ Click-Through 상태 시각적 표시 (빨간 점선 테두리 + "CLICK-THROUGH" 상단 텍스트 + 트레이 아이콘)
+- ✅ 트레이 메뉴에 Click-Through 토글 추가
+- ✅ 핫키 충돌 처리 (이미 등록된 경우 트레이 벌룬 알림)
 
 #### Sprint 2: 최종 마무리 + 배포 준비 🔄
 - 전체 기능 통합 테스트
@@ -241,13 +241,13 @@ WPF 프로젝트를 생성하고 핵심 기반을 구축한다. 타이틀바 없
 - 알려진 엣지 케이스 수정
 
 ### 완료 기준 (Definition of Done)
-- ⬜ 다른 앱 포커스 상태에서 글로벌 핫키로 메모장 표시/숨김 동작
-- ⬜ Click-Through 모드에서 마우스 클릭이 뒤의 앱에 전달
-- ⬜ Click-Through 모드에서 핫키/트레이로만 해제 가능
-- ⬜ Click-Through 상태가 시각적으로 구분 가능
-- ⬜ 메모리 80MB 이하, 유휴 CPU 0%, 시작 2초 이내
-- ⬜ 단일 EXE 파일로 정상 실행 (설치 불필요)
-- ⬜ Windows 10/11에서 정상 동작
+- ✅ 다른 앱 포커스 상태에서 글로벌 핫키로 메모장 표시/숨김 동작
+- ✅ Click-Through 모드에서 마우스 클릭이 뒤의 앱에 전달
+- ✅ Click-Through 모드에서 핫키/트레이로만 해제 가능
+- ✅ Click-Through 상태가 시각적으로 구분 가능 (빨간 점선 테두리 + 상단 텍스트)
+- ⬜ 메모리 80MB 이하, 유휴 CPU 0%, 시작 2초 이내 (Sprint 2)
+- ⬜ 단일 EXE 파일로 정상 실행 (설치 불필요) (Sprint 2)
+- ⬜ Windows 10/11에서 정상 동작 (Sprint 2)
 
 ### 기술 고려사항
 - RegisterHotKey는 프로세스 수준 등록, 프로그램 종료 시 UnregisterHotKey 필수
