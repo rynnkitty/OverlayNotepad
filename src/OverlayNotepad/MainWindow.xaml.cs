@@ -58,6 +58,13 @@ namespace OverlayNotepad
             ApplyFontSize(font.Size, persist: false);
             ApplyFontColor(font.Color, persist: false);
 
+            // 테마 초기화
+            ThemeManager.Instance.SetTheme(settings.Theme ?? "dark");
+            ApplyTheme(ThemeManager.Instance.CurrentTheme);
+
+            // 메뉴 체크 상태 동기화
+            SyncMenuCheckedStates(settings);
+
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
 
@@ -281,6 +288,68 @@ namespace OverlayNotepad
             this.DragMove();
         }
 
+        private void ApplyTheme(ThemeDefinition theme)
+        {
+            var textBrush = new SolidColorBrush(theme.TextColor);
+            textBrush.Freeze();
+            OutlinedText.FillBrush = textBrush;
+            MainTextBox.CaretBrush = textBrush;
+            if (!TextEffectCurrent.OutlineEnabled)
+                MainTextBox.Foreground = textBrush;
+
+            if (SettingsManager.Instance.Current.Transparency.Mode == "background")
+                MainBackground.Background = Brushes.Transparent;
+            else
+            {
+                var bgColor = theme.BackgroundColor;
+                bgColor.A = (byte)(theme.BackgroundOpacity * 255);
+                var bgBrush = new SolidColorBrush(bgColor);
+                bgBrush.Freeze();
+                MainBackground.Background = bgBrush;
+            }
+
+            var outlineBrush = new SolidColorBrush(theme.OutlineColor);
+            outlineBrush.Freeze();
+            OutlinedText.OutlineBrush = outlineBrush;
+
+            TextShadowEffect.Color = theme.ShadowColor;
+
+            var dragColor = theme.DragBarColor;
+            dragColor.A = (byte)(theme.DragBarOpacity * 255);
+            var dragBrush = new SolidColorBrush(dragColor);
+            dragBrush.Freeze();
+            DragBar.Background = dragBrush;
+        }
+
+        private void ToggleTheme()
+        {
+            ThemeManager.Instance.ToggleTheme();
+            var theme = ThemeManager.Instance.CurrentTheme;
+            ApplyTheme(theme);
+            var current = SettingsManager.Instance.Current;
+            current.Theme = theme.Name;
+            current.TextEffect.OutlineColor = ColorToHex(theme.OutlineColor);
+            current.Font.Color = ColorToHex(theme.TextColor);
+            SettingsManager.Instance.Save();
+        }
+
+        private void SyncMenuCheckedStates(AppSettings settings)
+        {
+            BackgroundTransparentMenuItem.IsChecked = (settings.Transparency.Mode == "background");
+            AlwaysOnTopMenuItem.IsChecked = settings.Topmost;
+            OutlineMenuItem.IsChecked = settings.TextEffect.OutlineEnabled;
+            ShadowMenuItem.IsChecked = settings.TextEffect.ShadowEnabled;
+            foreach (object item in OpacityMenu.Items)
+            {
+                if (item is MenuItem mi && mi.Tag != null &&
+                    double.TryParse(mi.Tag.ToString(), out double tagVal))
+                    mi.IsChecked = (tagVal == settings.Transparency.Opacity);
+            }
+        }
+
+        private static string ColorToHex(Color c) =>
+            string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B);
+
         private void ApplyFontFamily(string fontName, bool persist = true)
         {
             var family = new FontFamily(fontName);
@@ -367,15 +436,17 @@ namespace OverlayNotepad
 
         private void FontDialog_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new System.Windows.Forms.FontDialog();
-            dialog.Font = new System.Drawing.Font(
-                MainTextBox.FontFamily.Source,
-                (float)MainTextBox.FontSize);
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new System.Windows.Forms.FontDialog())
             {
-                ApplyFontFamily(dialog.Font.FontFamily.Name);
-                ApplyFontSize(dialog.Font.Size);
-                _fontMenuInitialized = false;
+                dialog.Font = new System.Drawing.Font(
+                    MainTextBox.FontFamily.Source,
+                    (float)MainTextBox.FontSize);
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    ApplyFontFamily(dialog.Font.FontFamily.Name);
+                    ApplyFontSize(dialog.Font.Size);
+                    _fontMenuInitialized = false;
+                }
             }
         }
 
@@ -411,12 +482,13 @@ namespace OverlayNotepad
 
         private void ColorDialog_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true };
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true })
             {
-                var c = dialog.Color;
-                string hex = string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B);
-                ApplyFontColor(hex);
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    var c = dialog.Color;
+                    ApplyFontColor(string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B));
+                }
             }
         }
 
