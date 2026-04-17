@@ -13,11 +13,18 @@ PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint1
 
 - ⬜ GitHub 웹에서 PR 생성 (phase3-sprint1 → develop)
 
-**코드 리뷰:**
-- ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
+**코드 리뷰: (2026-04-17 sprint-review 수행)**
+- ✅ 보안: 하드코딩 시크릿/API 키 없음, SQL/XSS 해당 없음 (데스크톱 앱)
+- ✅ TrayIconManager: IDisposable 구현, Window_Closing + EmergencyDisposeTray 이중 Dispose 보장
+- ✅ FontHelper: static HashSet 캐시로 InstalledFontCollection 1회만 로드, 미설치 글꼴 필터링
+- ✅ 서식 설정 영속화: ApplyFont*/persist 패턴으로 초기화 시 불필요한 Save() 방지
+- ✅ 글꼴 메뉴 초기화: _fontMenuInitialized 플래그로 SubmenuOpened 중복 빌드 방지
+- ⚠️ Medium: FontDialog_Click, ColorDialog_Click에서 dialog.Dispose() 미호출 (GC 위임 — 기능 이상 없으나 명시적 해제 권장)
+- ⚠️ Low: MainWindow.xaml에서 BackgroundTransparentMenuItem IsChecked="True" 하드코딩 — 저장된 settings와 초기 상태 불일치 가능성 (Window_Loaded에서 설정 반영되어 실질적 영향 없음)
 
 **자동 검증:**
-- ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
+- ⬜ Docker/서버 환경 없음 — WPF 데스크톱 앱으로 Docker Compose 미적용 (자동 검증 미수행)
+- ⬜ 단위 테스트 없음 — 이 프로젝트는 테스트 프로젝트 미포함 (수동 검증으로 대체)
 
 **수동 검증 필요 항목:**
 - ⬜ 앱 실행 후 시스템 트레이 아이콘 표시 확인
