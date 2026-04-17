@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T23:59:00",
+  "lastUpdated": "2026-04-17T12:00:00",
   "phases": [
     {
       "phase": 1,
@@ -335,54 +335,55 @@
         {
           "sprint": 1,
           "title": "글로벌 핫키 + Click-Through",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase4-sprint1",
           "document": "docs/phase/phase4/sprint1/sprint1.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/pull/",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
               "title": "NativeMethods P/Invoke 선언 + HotkeyService",
-              "path": null,
-              "testPlan": null,
-              "testResult": null,
-              "status": "planned",
-              "commits": []
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
+              "testResult": "MSBuild Debug/Release 빌드 성공 (0 Errors)",
+              "status": "completed",
+              "commits": ["f2e9b08"]
             },
             {
               "id": "task2",
               "title": "ClickThroughService",
-              "path": null,
-              "testPlan": null,
-              "testResult": null,
-              "status": "planned",
-              "commits": []
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
+              "testResult": "MSBuild Debug/Release 빌드 성공 (0 Errors)",
+              "status": "completed",
+              "commits": ["c1f0e74"]
             },
             {
               "id": "task3",
               "title": "Click-Through 시각 피드백 UI",
-              "path": null,
-              "testPlan": null,
-              "testResult": null,
-              "status": "planned",
-              "commits": []
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
+              "testResult": "MSBuild Debug/Release 빌드 성공 (0 Errors)",
+              "status": "completed",
+              "commits": ["0d6be61"]
             },
             {
               "id": "task4",
               "title": "MainWindow 통합 + 트레이/메뉴 연동 + 설정 저장",
-              "path": null,
-              "testPlan": null,
-              "testResult": null,
-              "status": "planned",
-              "commits": []
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공 + 수동 검증 (핫키/Click-Through/트레이 연동)",
+              "testResult": "MSBuild Debug/Release 빌드 성공 (0 Errors)",
+              "status": "completed",
+              "commits": ["3d1f4ab"]
             },
             {
               "id": "task5",
               "title": "통합 검증 + 엣지 케이스 + 안전장치 확인",
-              "path": null,
-              "testPlan": null,
-              "testResult": null,
-              "status": "planned",
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "핫키 6시나리오 + Click-Through 8시나리오 + 안전장치 7시나리오 + 회귀 10시나리오 + 조합 5시나리오",
+              "testResult": "MSBuild Debug/Release 빌드 성공 (0 Errors), 수동 검증 완료",
+              "status": "completed",
               "commits": []
             }
           ]

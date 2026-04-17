@@ -8,9 +8,11 @@ namespace OverlayNotepad.Services
         private NotifyIcon _notifyIcon;
         private ContextMenuStrip _trayMenu;
         private ToolStripMenuItem _alwaysOnTopItem;
+        private ToolStripMenuItem _clickThroughItem;
 
         public event EventHandler ToggleVisibilityRequested;
         public event EventHandler AlwaysOnTopToggleRequested;
+        public event EventHandler ClickThroughToggleRequested;
         public event EventHandler ExitRequested;
 
         public void Initialize(System.Drawing.Icon appIcon)
@@ -26,6 +28,12 @@ namespace OverlayNotepad.Services
             _alwaysOnTopItem.CheckedChanged += (s, e) =>
                 AlwaysOnTopToggleRequested?.Invoke(this, EventArgs.Empty);
 
+            _clickThroughItem = new ToolStripMenuItem("Click-Through");
+            _clickThroughItem.CheckOnClick = true;
+            _clickThroughItem.Checked = false;
+            _clickThroughItem.CheckedChanged += (s, e) =>
+                ClickThroughToggleRequested?.Invoke(this, EventArgs.Empty);
+
             var separator = new ToolStripSeparator();
 
             var exitItem = new ToolStripMenuItem("종료");
@@ -33,6 +41,7 @@ namespace OverlayNotepad.Services
 
             _trayMenu.Items.Add(toggleItem);
             _trayMenu.Items.Add(_alwaysOnTopItem);
+            _trayMenu.Items.Add(_clickThroughItem);
             _trayMenu.Items.Add(separator);
             _trayMenu.Items.Add(exitItem);
 
@@ -49,6 +58,26 @@ namespace OverlayNotepad.Services
         {
             if (_alwaysOnTopItem != null)
                 _alwaysOnTopItem.Checked = isTopmost;
+        }
+
+        public void UpdateClickThroughState(bool isEnabled)
+        {
+            if (_clickThroughItem != null)
+                _clickThroughItem.Checked = isEnabled;
+            if (_notifyIcon != null)
+                _notifyIcon.Text = isEnabled ? "OverlayNotepad (Click-Through)" : "OverlayNotepad";
+        }
+
+        public void SetClickThroughAvailable(bool isAvailable)
+        {
+            if (_clickThroughItem == null) return;
+            _clickThroughItem.Enabled = isAvailable;
+            _clickThroughItem.Text = isAvailable ? "Click-Through" : "Click-Through (핫키 없음)";
+        }
+
+        public void ShowBalloonTip(string title, string text, int timeoutMs = 3000)
+        {
+            _notifyIcon?.ShowBalloonTip(timeoutMs, title, text, ToolTipIcon.Info);
         }
 
         public void Dispose()

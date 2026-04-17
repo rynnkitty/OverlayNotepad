@@ -14,6 +14,8 @@ namespace OverlayNotepad
     {
         private AutoSaveManager _autoSaveManager;
         private TrayIconManager _trayIconManager;
+        private HotkeyService _hotkeyService;
+        private ClickThroughService _clickThroughService;
         private bool _fontMenuInitialized = false;
 
         // 현재 설정은 SettingsManager.Instance.Current에서 참조
@@ -92,7 +94,36 @@ namespace OverlayNotepad
             _trayIconManager.UpdateAlwaysOnTopState(this.Topmost);
             _trayIconManager.ToggleVisibilityRequested += OnTrayToggleVisibility;
             _trayIconManager.AlwaysOnTopToggleRequested += OnTrayAlwaysOnTopToggle;
+            _trayIconManager.ClickThroughToggleRequested += OnTrayClickThroughToggle;
             _trayIconManager.ExitRequested += OnTrayExit;
+
+            // HotkeyService 초기화 (Window.Loaded 이후 Handle이 유효)
+            _hotkeyService = new HotkeyService();
+            _hotkeyService.Initialize(this);
+            _hotkeyService.ToggleVisibilityRequested += OnHotkeyToggleVisibility;
+            _hotkeyService.ToggleClickThroughRequested += OnHotkeyToggleClickThrough;
+
+            // ClickThroughService 초기화 (HotkeyService.Handle 재사용)
+            _clickThroughService = new ClickThroughService();
+            _clickThroughService.Initialize(_hotkeyService.Handle, _hotkeyService.IsClickThroughHotkeyRegistered);
+            _clickThroughService.StateChanged += OnClickThroughStateChanged;
+
+            // 핫키 등록 실패 처리
+            var failedHotkeys = _hotkeyService.GetFailedHotkeys();
+            if (failedHotkeys.Count > 0)
+            {
+                _trayIconManager.ShowBalloonTip("핫키 등록 실패",
+                    "다음 핫키를 등록하지 못했습니다:\n" + string.Join("\n", failedHotkeys) +
+                    "\n다른 프로그램이 사용 중일 수 있습니다.");
+                if (!_hotkeyService.IsClickThroughHotkeyRegistered)
+                {
+                    _trayIconManager.SetClickThroughAvailable(false);
+                    ClickThroughMenuItem.IsEnabled = false;
+                }
+            }
+
+            // ClickThroughMenuItem Click 이벤트 연결
+            ClickThroughMenuItem.Click += ClickThroughMenuItem_Click;
 
             MainTextBox.Focus();
         }
@@ -111,6 +142,10 @@ namespace OverlayNotepad
             _autoSaveManager?.Stop();
             SettingsManager.Instance.SaveMemo(MainTextBox.Text);
             SettingsManager.Instance.Save();
+
+            // 핫키 해제
+            _hotkeyService?.Dispose();
+            _hotkeyService = null;
 
             // 트레이 아이콘 정리
             _trayIconManager?.Dispose();
@@ -200,6 +235,9 @@ namespace OverlayNotepad
         }
 
         private void OnTrayToggleVisibility(object sender, System.EventArgs e)
+            => ToggleWindowVisibility();
+
+        private void ToggleWindowVisibility()
         {
             if (!this.IsVisible || this.WindowState == WindowState.Minimized)
             {
@@ -219,9 +257,58 @@ namespace OverlayNotepad
             SetTopmost(!this.Topmost);
         }
 
+        private void OnTrayClickThroughToggle(object sender, System.EventArgs e)
+        {
+            _clickThroughService?.Toggle();
+        }
+
         private void OnTrayExit(object sender, System.EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void OnHotkeyToggleVisibility(object sender, System.EventArgs e)
+            => ToggleWindowVisibility();
+
+        private void OnHotkeyToggleClickThrough(object sender, System.EventArgs e)
+        {
+            _clickThroughService?.Toggle();
+        }
+
+        private void OnClickThroughStateChanged(object sender, ClickThroughChangedEventArgs e)
+        {
+            // 시각 피드백
+            ClickThroughIndicator.Visibility = e.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+            ClickThroughLabel.Visibility = e.IsEnabled ? Visibility.Visible : Visibility.Collapsed;
+
+            // 투명도 하한 강제 (20% 미만이면 조정)
+            if (e.IsEnabled)
+            {
+                double safe = ClickThroughService.EnforceOpacityFloor(this.Opacity, true);
+                if (safe != this.Opacity)
+                {
+                    this.Opacity = safe;
+                    SettingsManager.Instance.Current.Transparency.Opacity = safe;
+                    SettingsManager.Instance.Save();
+                }
+            }
+
+            // 트레이 동기화
+            _trayIconManager?.UpdateClickThroughState(e.IsEnabled);
+
+            // 컨텍스트 메뉴 동기화
+            ClickThroughMenuItem.IsChecked = e.IsEnabled;
+            SettingsManager.Instance.Current.IsClickThrough = e.IsEnabled;
+
+            // 최초 활성화 시 트레이 벌룬 안내
+            if (e.IsEnabled && e.IsFirstActivation)
+                _trayIconManager?.ShowBalloonTip("Click-Through 모드 활성화",
+                    "마우스 클릭이 뒤의 앱에 전달됩니다.\n해제: Ctrl+Shift+T 또는 트레이 메뉴");
+        }
+
+        private void ClickThroughMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            _clickThroughService?.Toggle();
         }
 
         private void SetTopmost(bool value)
@@ -268,7 +355,8 @@ namespace OverlayNotepad
         private void OpacityMenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem clicked = sender as MenuItem;
-            double opacity = double.Parse(clicked.Tag.ToString());
+            if (!double.TryParse(clicked.Tag.ToString(), out double opacity)) return;
+            opacity = ClickThroughService.EnforceOpacityFloor(opacity, _clickThroughService?.IsEnabled == true);
             this.Opacity = opacity;
             SettingsManager.Instance.Current.Transparency.Opacity = opacity;
             SettingsManager.Instance.Save();
@@ -340,6 +428,7 @@ namespace OverlayNotepad
             AlwaysOnTopMenuItem.IsChecked = settings.Topmost;
             OutlineMenuItem.IsChecked = settings.TextEffect.OutlineEnabled;
             ShadowMenuItem.IsChecked = settings.TextEffect.ShadowEnabled;
+            ClickThroughMenuItem.IsChecked = settings.IsClickThrough;
             foreach (object item in OpacityMenu.Items)
             {
                 if (item is MenuItem mi && mi.Tag != null &&
