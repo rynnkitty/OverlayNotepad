@@ -288,7 +288,7 @@
             {
               "id": "task1",
               "title": "ThemeDefinition 모델 + ThemeManager 생성",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
               "status": "planned",
@@ -296,8 +296,8 @@
             },
             {
               "id": "task2",
-              "title": "테마 전환 기능 + MainWindow 통합",
-              "path": null,
+              "title": "테마 전환 기능 + MainWindow 통합 + Sprint 1 미해결 개선",
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
               "status": "planned",
@@ -306,7 +306,7 @@
             {
               "id": "task3",
               "title": "컨텍스트 메뉴 최종 구성 (PRD F11 완성)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
               "status": "planned",
@@ -315,7 +315,7 @@
             {
               "id": "task4",
               "title": "통합 검증 + 테마/메뉴 엣지 케이스 + Phase 3 DoD 확인",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
               "status": "planned",
