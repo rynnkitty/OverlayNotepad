@@ -1,248 +1,149 @@
-# AI-Native 예제 Project
+# OverlayNotepad (투명 메모장)
 
-> AI-Native 개발 방법론 예제 — Claude Code 에이전트 및 개발 워크플로우 설정
+> 화면 위에 항상 떠 있는 투명 메모장 — 배경을 투명하게 하여 뒤의 콘텐츠를 보면서 메모할 수 있는 오버레이 도구
 
----
-
-## 📁 프로젝트 구조
-
-```
-choiji-guide-big/
-├── .claude/
-│   ├── agents/
-│   │   ├── prd-to-roadmap.md          # PRD → ROADMAP 생성
-│   │   ├── phase-planner.md           # Phase 계획 + 전문가 검토
-│   │   ├── sprint-planner.md          # Sprint 실행 명세서 생성
-│   │   ├── sprint-close.md            # Sprint 마무리 (PR + 문서)
-│   │   ├── sprint-review.md           # 코드 리뷰 + 자동 검증
-│   │   ├── sprint-pr-fix.md           # PR 이슈 수정 + 재리뷰
-│   │   ├── hotfix-close.md            # 핫픽스 마무리
-│   │   └── deploy-prod.md             # 프로덕션 배포
-│   ├── rules/
-│   │   ├── backend.md                 # 백엔드 코딩 규칙
-│   │   ├── frontend.md                # 프론트엔드 코딩 규칙
-│   │   ├── sprint-workflow.md         # 스프린트/핫픽스 워크플로우 규칙
-│   │   └── notion.md                  # Notion 기술 문서 관리
-│   ├── commands/
-│   │   ├── sprint-dev.md              # Sprint 구현 오케스트레이터
-│   │   ├── restart.md                 # 서비스 재시작
-│   │   ├── dashboard.md               # 프로젝트 대시보드
-│   │   └── context-audit.md           # 컨텍스트 자산 감사
-│   ├── agent-memory/
-│   │   ├── prd-to-roadmap/
-│   │   ├── phase-planner/
-│   │   ├── sprint-planner/
-│   │   ├── sprint-close/
-│   │   ├── sprint-review/
-│   │   ├── sprint-pr-fix/
-│   │   ├── hotfix-close/
-│   │   └── deploy-prod/
-│   ├── hooks/
-│   │   ├── pretooluse-bash-guard.sh   # Bash 위험 명령 차단
-│   │   ├── posttooluse-index-sync.sh  # git commit/checkout 시 index.json 자동 동기화
-│   │   ├── stop-doc-checker.sh        # 에이전트 문서 누락 검증
-│   │   ├── lib/
-│   │   │   ├── doc-rules.json         # 에이전트별 필수 업데이트 규칙
-│   │   │   └── audit-rules.json       # context-audit 감사 규칙
-│   │   └── test-hooks.sh
-│   └── settings.json
-├── docs/
-│   ├── prd.md                         # 제품 요구사항 문서
-│   ├── dev-process.md                 # 개발 프로세스 가이드 (SSOT)
-│   ├── ci-policy.md                   # CI/CD 정책
-│   ├── setup-guide.md                 # 환경 설정 가이드
-│   ├── prompt-guide.md                # 사용자 프롬프트 가이드
-│   ├── experts/                       ← 도메인 전문가 프로필 (phase-planner 활용)
-│   │   ├── product-owner.md           # 프로젝트 PO
-│   │   ├── clinic-admin.md            # 1차의원 행정 전문가
-│   │   ├── clinic-physician.md        # 1차의원 진료의
-│   │   ├── interface-specialist.md    # 인터페이스 전문가
-│   │   └── ux-specialist.md           # Windows Application UX 전문가
-│   ├── templates/                     ← 문서 작성 템플릿
-│   │   ├── EXAMPLE-prd.md
-│   │   ├── EXAMPLE-phase.md
-│   │   ├── EXAMPLE-sprint.md
-│   │   ├── EXAMPLE-task.md
-│   │   ├── EXAMPLE-test-plan.md
-│   │   ├── EXAMPLE-test-result.md
-│   │   └── EXAMPLE-hotfix.md
-│   ├── index.json                     ← 프로젝트 진행 상황 (에이전트가 관리)
-│   ├── phase/                         ← Phase/Sprint 문서
-│   ├── hotfix/                        ← Hotfix 문서
-│   ├── dashboard/                     ← /dashboard 명령 UI
-│   └── deploy-history/                ← 배포 기록 아카이브
-├── CLAUDE.md
-├── ROADMAP.md
-└── deploy.md
-```
+![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
+![Framework](https://img.shields.io/badge/.NET%20Framework-4.8-purple)
+![UI](https://img.shields.io/badge/UI-WPF-green)
+![Deploy](https://img.shields.io/badge/deploy-Single%20EXE-orange)
 
 ---
 
-## 🤖 Claude 에이전트
+## 프로젝트 소개
 
-8개의 특화 에이전트가 개발 라이프사이클 전체를 커버합니다.
+듀얼 모니터가 없거나, 화면 위에 메모를 띄워두고 참고하며 작업해야 하는 사용자를 위한 도구입니다.
+설치 없이 EXE 하나만 실행하면 투명한 메모장이 화면 위에 떠서, 뒤의 콘텐츠를 보면서 메모할 수 있습니다.
 
-### 1. prd-to-roadmap
-**트리거**: PRD 작성 완료 후 ROADMAP 생성 시
+### 대상 사용자
 
-`docs/prd.md`를 분석하여 Phase/Sprint 구조의 `ROADMAP.md`를 생성합니다.
-
-```
-사용자: "PRD 작성했어. ROADMAP 만들어줘."
-→ prd-to-roadmap 에이전트가 Phase 기반 ROADMAP.md 생성
-```
-
-### 2. phase-planner
-**트리거**: 여러 Sprint에 걸친 기능 계획 시
-
-코드베이스를 분석하고 **도메인 전문가 3~5명**(프로젝트 PO, 1차의원 행정 전문가, 진료의, 인터페이스 전문가, UX 전문가)의 병렬 검토를 거쳐 Phase 문서를 생성합니다.
-
-```
-사용자: "요구사항 정리됐어. Phase 문서 만들어줘."
-→ phase-planner 에이전트가 전문가 검토 후 docs/phase/phase{N}/phase{N}.md 생성
-```
-
-### 3. sprint-planner
-**트리거**: 새 Sprint 계획 수립 시
-
-Phase 문서를 참조하여 Task 단위 실행 명세서(`sprint{N}.md`)를 생성합니다.
-
-```
-사용자: "phase1의 sprint 1 계획 세워줘."
-→ sprint-planner 에이전트가 docs/phase/phase1/sprint1/sprint1.md 생성
-```
-
-### 4. sprint-close
-**트리거**: Sprint 구현 완료 후
-
-1. ROADMAP.md 상태 업데이트
-2. `develop` 브랜치로 PR 생성
-3. deploy.md 아카이빙
-4. sprint-planner 메모리 업데이트
-
-```
-사용자: "sprint 1 구현 끝났어. 마무리 해줘."
-→ sprint-close 에이전트가 develop PR 생성 + 문서 정리
-```
-
-### 5. sprint-review
-**트리거**: sprint-close 후 PR 검토 완료 후
-
-코드 리뷰 + 자동 검증 + deploy.md 결과 기록을 수행합니다.
-
-```
-사용자: "PR 확인했어. 스프린트 리뷰 해줘."
-→ sprint-review 에이전트가 코드 리뷰 + 검증 수행
-```
-
-### 6. sprint-pr-fix
-**트리거**: sprint-review에서 이슈 발견 시
-
-이슈별 수정을 안내하고 재리뷰를 실행합니다.
-
-### 7. hotfix-close
-**트리거**: 핫픽스 구현 완료 후
-
-`main` 브랜치 PR 생성 → 경량 코드 리뷰 → 타겟 검증 → `develop` 역머지 PR까지 자동 처리합니다.
-
-```
-사용자: "hotfix 마무리 해줘."
-→ hotfix-close 에이전트가 main PR + develop 역머지
-```
-
-### 8. deploy-prod
-**트리거**: develop 브랜치 QA 완료 후 프로덕션 배포 시
-
-`develop → main` PR 생성, 사전 점검, 배포 후 실서버 검증을 수행합니다.
-
-```
-사용자: "develop 검증 완료됐어. 프로덕션 배포 해줘."
-→ deploy-prod 에이전트가 PR 생성 + 실서버 헬스체크
-```
+- 개발자 (API 문서 보면서 코딩)
+- 학생 (강의 화면 위에 필기)
+- 번역가 (원문 위에 번역 메모)
+- 실시간 참고자료가 필요한 모든 직군
 
 ---
 
-## 🔒 Hook 시스템
+## 핵심 기능
 
-### PreToolUse: bash-guard (위험 명령 차단)
-
-| 차단 패턴 | 이유 |
-|----------|------|
-| `cd ... &&` 체이닝 | 프로젝트 루트에서 직접 실행 |
-| `git push origin main` | PR만 허용 |
-| `git push origin develop` | PR만 허용 |
-| `git push --force` | 이력 파괴 방지 |
-| `git reset --hard` | 변경사항 손실 방지 |
-| 잘못된 브랜치명 | `phase{P}-sprint{N}` 또는 `hotfix/*` 형식만 허용 |
-
-### PostToolUse: index-sync (진행 상황 자동 동기화)
-
-git commit/checkout 감지 시 `docs/index.json`을 자동 업데이트합니다.
-
-### Stop: doc-checker (문서 누락 검증)
-
-에이전트가 응답을 마치려 할 때 필수 파일 업데이트 여부를 체크합니다.
-
-| 에이전트 | 필수 업데이트 체크 |
-|---------|-----------------|
-| prd-to-roadmap | index.json (`project` 필드) |
-| phase-planner | ROADMAP, index.json, MEMORY, 전문가 리뷰 파일 ≥1 |
-| sprint-planner | ROADMAP, index.json, MEMORY |
-| sprint-close | deploy.md, index.json, MEMORY, 아카이빙, 체크박스, PR→develop |
-| sprint-review | Critical 미해결 경고 |
-| hotfix-close | deploy.md, index.json, 아카이빙, hotfix 문서, PR→main |
-| deploy-prod | deploy.md, index.json, 아카이빙 |
-
-> 규칙 추가/변경: `.claude/hooks/lib/doc-rules.json`만 수정하면 됩니다.
-
----
-
-## 🔄 개발 워크플로우
-
-### Sprint 흐름
-
-```
-1. prd-to-roadmap → ROADMAP.md 생성 (최초 1회)
-2. phase-planner → docs/phase/phase{N}/phase{N}.md 생성 (Phase 시작 시)
-3. sprint-planner → docs/phase/phase{P}/sprint{N}/sprint{N}.md 생성
-4. git checkout -b phase{P}-sprint{N}
-5. /sprint-dev {P}-{N} → Task 순서대로 구현
-6. sprint-close → develop PR + 문서 정리
-7. sprint-review → 코드 리뷰 + 검증
-8. deploy-prod → main 배포
-```
-
-### Hotfix 흐름
-
-```
-1. git checkout -b hotfix/{설명} (main 기반)
-2. 긴급 수정...
-3. hotfix-close → main PR + 타겟 검증 + develop 역머지
-```
-
-자세한 내용은 `docs/dev-process.md` 참조.
-
----
-
-## 📋 슬래시 커맨드
-
-| 커맨드 | 설명 |
-|--------|------|
-| `/sprint-dev {P}-{N}` | Sprint 구현 오케스트레이터 |
-| `/restart [service]` | 서비스 재시작 |
-| `/dashboard` | 프로젝트 대시보드 열기 |
-| `/context-audit` | 컨텍스트 자산 감사 |
-
----
-
-## 📚 참고 문서
-
-| 문서 | 용도 |
+| 기능 | 설명 |
 |------|------|
-| `docs/prd.md` | 제품 요구사항 문서 |
-| `docs/dev-process.md` | 개발 프로세스 전체 가이드 (SSOT) |
-| `docs/ci-policy.md` | CI/CD 정책 |
-| `docs/setup-guide.md` | 환경 설정 가이드 |
-| `docs/prompt-guide.md` | 사용자 프롬프트 가이드 |
-| `ROADMAP.md` | 프로젝트 로드맵 |
-| `deploy.md` | 현재 수동 검증 항목 |
+| **투명 배경** | 배경만 투명 / 전체 투명 모드 전환, 투명도 단계 조절 (20~100%) |
+| **Always on Top** | 항상 최상위 표시 토글 |
+| **텍스트 테두리/그림자** | FormattedText + Geometry 아웃라인, DropShadowEffect 그림자로 어떤 배경에서든 가독성 확보 |
+| **서식 지원** | 글꼴, 크기, 색상 변경 (전체 텍스트 일괄 적용) |
+| **다크/라이트 테마** | 원클릭 테마 전환, 글자색·배경색·테두리색 일괄 변경 |
+| **Click-Through** | 마우스 클릭이 메모장을 통과하여 뒤 앱에 전달 (Win32 WS_EX_TRANSPARENT) |
+| **자동 저장** | 텍스트 변경 후 2초 디바운스 자동 저장, 비정상 종료 시에도 데이터 보존 |
+| **윈도우 관리** | 타이틀바 없는 커스텀 드래그/리사이즈, 위치·크기 저장/복원 |
+| **시스템 트레이** | 최소화 시 트레이 숨김, 더블클릭 복원 |
+| **글로벌 핫키** | Ctrl+Shift+N (표시/숨김), Ctrl+Shift+T (Click-Through) |
+| **컨텍스트 메뉴** | 투명도, 테마, 서식, 테두리, Always on Top 등 전체 설정 접근 |
+
+---
+
+## 기술 스택
+
+| 항목 | 선택 | 이유 |
+|------|------|------|
+| 프레임워크 | .NET Framework 4.8 | Windows 10+에 기본 포함, 별도 런타임 설치 불필요 |
+| UI | WPF (XAML + 코드비하인드) | 투명 윈도우 네이티브 지원, TextBox IME/한글 자동 지원 |
+| 투명 구현 | AllowsTransparency=True | 배경만 투명, 텍스트 불투명 유지 |
+| 텍스트 효과 | FormattedText + Geometry | 텍스트 아웃라인 정밀 제어 |
+| Click-Through | Win32 WS_EX_TRANSPARENT 인터롭 | 동적 윈도우 스타일 변경 |
+| 설정 저장 | JSON (%AppData%/OverlayNotepad/) | 레지스트리 의존 최소화 |
+| 시스템 트레이 | WinForms NotifyIcon 인터롭 | 외부 NuGet 없이 단일 EXE 유지 |
+| 배포 | 단일 EXE | 설치/언설치 프로세스 없음 |
+
+---
+
+## 개발 로드맵
+
+```
+Phase 0: 프로젝트 설정 ✅
+  │
+  v
+Phase 1: WPF 투명 윈도우 + 텍스트 입력 (Sprint 1~2)  📋
+  │       └ Sprint 1: 프로젝트 구조 + 투명 윈도우 + TextBox
+  │       └ Sprint 2: 투명도 모드 + Always on Top + 컨텍스트 메뉴
+  v
+Phase 2: 텍스트 효과 + 자동 저장 + 윈도우 관리 (Sprint 1~2)  📋
+  │       └ Sprint 1: 텍스트 테두리/그림자 커스텀 컨트롤
+  │       └ Sprint 2: 설정 관리 + 자동 저장 + 위치/크기 저장
+  v
+Phase 3: 시스템 트레이 + 서식/테마 + 메뉴 완성 (Sprint 1~2)  📋  ← MVP
+  │       └ Sprint 1: 시스템 트레이 + 글꼴/크기/색상
+  │       └ Sprint 2: 다크/라이트 테마 + 컨텍스트 메뉴 완성
+  v
+Phase 4: 글로벌 핫키 + Click-Through + 마무리 (Sprint 1~2)  📋
+          └ Sprint 1: RegisterHotKey + Click-Through 구현
+          └ Sprint 2: 통합 테스트 + 성능 최적화 + 배포 준비
+```
+
+> ✅ 완료 | 🔄 진행 중 | 📋 계획 수립 완료
+
+### 마일스톤
+
+| 마일스톤 | Phase | 핵심 성과 |
+|---------|-------|----------|
+| P0 기초 | Phase 1 | 투명 윈도우에서 텍스트 입력 동작 |
+| P0 완성 | Phase 2 | 텍스트 테두리/그림자 + 자동 저장 |
+| **MVP 출시** | **Phase 3** | **트레이 + 서식 + 테마, 일상 사용 가능** |
+| 기능 완성 | Phase 4 | PRD 전체 기능 구현 완료 |
+
+---
+
+## 비기능 요구사항
+
+| 항목 | 목표 |
+|------|------|
+| 시작 시간 | 2초 이내 |
+| 메모리 사용량 | 80MB 이하 (유휴 상태) |
+| CPU 사용 | 유휴 시 0% |
+| 호환성 | Windows 10 (1903+) / Windows 11 |
+| 배포 | 단일 EXE, 설치 불필요 |
+
+---
+
+## 프로젝트 구조
+
+```
+OverlayNotepad/
+├── src/                           ← 소스 코드 (Phase 1부터 생성)
+│   └── OverlayNotepad/
+├── docs/
+│   ├── prd.md                     # 제품 요구사항 문서
+│   ├── dev-process.md             # 개발 프로세스 가이드
+│   ├── phase/                     # Phase/Sprint 계획 문서
+│   │   ├── phase1/
+│   │   │   ├── phase1.md          # Phase 1 실행 계획
+│   │   │   ├── sprint1/sprint1.md # Sprint 실행 명세서
+│   │   │   └── sprint2/sprint2.md
+│   │   ├── phase2/
+│   │   ├── phase3/
+│   │   └── phase4/
+│   ├── experts/                   # 도메인 전문가 프로필
+│   └── templates/                 # 문서 작성 템플릿
+├── .claude/                       # Claude Code 에이전트 설정
+│   ├── agents/                    # 8개 특화 에이전트
+│   ├── commands/                  # 슬래시 커맨드
+│   ├── rules/                     # 코딩/워크플로우 규칙
+│   └── hooks/                     # 자동화 훅
+├── CLAUDE.md                      # Claude Code 프로젝트 설정
+├── ROADMAP.md                     # 프로젝트 로드맵 (SSOT)
+└── deploy.md                      # 수동 검증 항목
+```
+
+---
+
+## 개발 환경
+
+- **IDE**: Visual Studio 2022+
+- **프레임워크**: .NET Framework 4.8
+- **OS**: Windows 10/11
+- **AI 도구**: Claude Code (에이전트 기반 개발)
+
+---
+
+## 라이선스
+
+이 프로젝트는 개인 프로젝트입니다.
