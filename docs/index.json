@@ -343,8 +343,8 @@
             {
               "id": "task1",
               "title": "NativeMethods P/Invoke 선언 + HotkeyService",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -352,8 +352,8 @@
             {
               "id": "task2",
               "title": "ClickThroughService",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -361,8 +361,8 @@
             {
               "id": "task3",
               "title": "Click-Through 시각 피드백 UI",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -370,8 +370,8 @@
             {
               "id": "task4",
               "title": "MainWindow 통합 + 트레이/메뉴 연동 + 설정 저장",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "MSBuild 빌드 성공 + 수동 검증 (핫키/Click-Through/트레이 연동)",
               "testResult": null,
               "status": "planned",
               "commits": []
@@ -379,8 +379,8 @@
             {
               "id": "task5",
               "title": "통합 검증 + 엣지 케이스 + 안전장치 확인",
-              "path": null,
-              "testPlan": null,
+              "path": "docs/phase/phase4/sprint1/sprint1.md",
+              "testPlan": "핫키 6시나리오 + Click-Through 8시나리오 + 안전장치 7시나리오 + 회귀 10시나리오 + 조합 5시나리오",
               "testResult": null,
               "status": "planned",
               "commits": []
