@@ -72,6 +72,7 @@
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Services\AutoSaveManager.cs" />
+    <Compile Include="Helpers\FontHelper.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
     <Compile Include="Services\TrayIconManager.cs" />
   </ItemGroup>
