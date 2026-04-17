@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T23:30:00",
+  "lastUpdated": "2026-04-17T23:59:00",
   "phases": [
     {
       "phase": 1,
@@ -218,7 +218,7 @@
     {
       "phase": 3,
       "title": "시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성",
-      "status": "in_progress",
+      "status": "completed",
       "document": "docs/phase/phase3/phase3.md",
       "sprints": [
         {
@@ -280,45 +280,46 @@
         {
           "sprint": 2,
           "title": "다크/라이트 테마 + 컨텍스트 메뉴 완성",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase3-sprint2",
           "document": "docs/phase/phase3/sprint2/sprint2.md",
-          "progress": { "total": 4, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint2",
+          "progress": { "total": 4, "completed": 4 },
           "tasks": [
             {
               "id": "task1",
               "title": "ThemeDefinition 모델 + ThemeManager 생성",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["5c33ffa"]
             },
             {
               "id": "task2",
-              "title": "테마 전환 기능 + MainWindow 통합",
-              "path": null,
+              "title": "테마 전환 기능 + MainWindow 통합 + Sprint 1 미해결 개선",
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["b2f39a9"]
             },
             {
               "id": "task3",
               "title": "컨텍스트 메뉴 최종 구성 (PRD F11 완성)",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
-              "commits": []
+              "status": "completed",
+              "commits": ["e87c6a3"]
             },
             {
               "id": "task4",
               "title": "통합 검증 + 테마/메뉴 엣지 케이스 + Phase 3 DoD 확인",
-              "path": null,
+              "path": "docs/phase/phase3/sprint2/sprint2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]

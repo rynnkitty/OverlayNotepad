@@ -58,6 +58,13 @@ namespace OverlayNotepad
             ApplyFontSize(font.Size, persist: false);
             ApplyFontColor(font.Color, persist: false);
 
+            // 테마 초기화
+            ThemeManager.Instance.SetTheme(settings.Theme ?? "dark");
+            ApplyTheme(ThemeManager.Instance.CurrentTheme);
+
+            // 메뉴 체크 상태 동기화
+            SyncMenuCheckedStates(settings);
+
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
 
@@ -68,6 +75,7 @@ namespace OverlayNotepad
 
             // 색상 서브메뉴 동적 생성
             InitializeFontColorMenu();
+            InitializeOutlineColorMenu();
 
             // TrayIconManager 초기화
             _trayIconManager = new TrayIconManager();
@@ -281,6 +289,68 @@ namespace OverlayNotepad
             this.DragMove();
         }
 
+        private void ApplyTheme(ThemeDefinition theme)
+        {
+            var textBrush = new SolidColorBrush(theme.TextColor);
+            textBrush.Freeze();
+            OutlinedText.FillBrush = textBrush;
+            MainTextBox.CaretBrush = textBrush;
+            if (!TextEffectCurrent.OutlineEnabled)
+                MainTextBox.Foreground = textBrush;
+
+            if (SettingsManager.Instance.Current.Transparency.Mode == "background")
+                MainBackground.Background = Brushes.Transparent;
+            else
+            {
+                var bgColor = theme.BackgroundColor;
+                bgColor.A = (byte)(theme.BackgroundOpacity * 255);
+                var bgBrush = new SolidColorBrush(bgColor);
+                bgBrush.Freeze();
+                MainBackground.Background = bgBrush;
+            }
+
+            var outlineBrush = new SolidColorBrush(theme.OutlineColor);
+            outlineBrush.Freeze();
+            OutlinedText.OutlineBrush = outlineBrush;
+
+            TextShadowEffect.Color = theme.ShadowColor;
+
+            var dragColor = theme.DragBarColor;
+            dragColor.A = (byte)(theme.DragBarOpacity * 255);
+            var dragBrush = new SolidColorBrush(dragColor);
+            dragBrush.Freeze();
+            DragBar.Background = dragBrush;
+        }
+
+        private void ToggleTheme()
+        {
+            ThemeManager.Instance.ToggleTheme();
+            var theme = ThemeManager.Instance.CurrentTheme;
+            ApplyTheme(theme);
+            var current = SettingsManager.Instance.Current;
+            current.Theme = theme.Name;
+            current.TextEffect.OutlineColor = ColorToHex(theme.OutlineColor);
+            current.Font.Color = ColorToHex(theme.TextColor);
+            SettingsManager.Instance.Save();
+        }
+
+        private void SyncMenuCheckedStates(AppSettings settings)
+        {
+            BackgroundTransparentMenuItem.IsChecked = (settings.Transparency.Mode == "background");
+            AlwaysOnTopMenuItem.IsChecked = settings.Topmost;
+            OutlineMenuItem.IsChecked = settings.TextEffect.OutlineEnabled;
+            ShadowMenuItem.IsChecked = settings.TextEffect.ShadowEnabled;
+            foreach (object item in OpacityMenu.Items)
+            {
+                if (item is MenuItem mi && mi.Tag != null &&
+                    double.TryParse(mi.Tag.ToString(), out double tagVal))
+                    mi.IsChecked = (tagVal == settings.Transparency.Opacity);
+            }
+        }
+
+        private static string ColorToHex(Color c) =>
+            string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B);
+
         private void ApplyFontFamily(string fontName, bool persist = true)
         {
             var family = new FontFamily(fontName);
@@ -310,22 +380,26 @@ namespace OverlayNotepad
             if (persist) SettingsManager.Instance.Save();
         }
 
-        private void InitializeFontColorMenu()
+        private void InitializeColorMenu(ItemsControl menu, RoutedEventHandler presetHandler, RoutedEventHandler customHandler)
         {
-            FontColorMenu.Items.Clear();
+            menu.Items.Clear();
             foreach (var (name, hex) in FontHelper.GetPresetColors())
             {
-                var rect = new Rectangle { Width = 12, Height = 12, Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex)) };
+                var brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+                brush.Freeze();
+                var rect = new Rectangle { Width = 12, Height = 12, Fill = brush };
                 var item = new MenuItem { Header = name, Tag = hex, Icon = rect };
-                item.Click += ColorPreset_Click;
-                FontColorMenu.Items.Add(item);
+                item.Click += presetHandler;
+                menu.Items.Add(item);
             }
-            var sep = new Separator();
-            FontColorMenu.Items.Add(sep);
+            menu.Items.Add(new Separator());
             var customItem = new MenuItem { Header = "사용자 지정..." };
-            customItem.Click += ColorDialog_Click;
-            FontColorMenu.Items.Add(customItem);
+            customItem.Click += customHandler;
+            menu.Items.Add(customItem);
         }
+
+        private void InitializeFontColorMenu()
+            => InitializeColorMenu(FontColorMenu, ColorPreset_Click, ColorDialog_Click);
 
         private void FontFamilyMenu_SubmenuOpened(object sender, RoutedEventArgs e)
         {
@@ -367,15 +441,17 @@ namespace OverlayNotepad
 
         private void FontDialog_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new System.Windows.Forms.FontDialog();
-            dialog.Font = new System.Drawing.Font(
-                MainTextBox.FontFamily.Source,
-                (float)MainTextBox.FontSize);
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new System.Windows.Forms.FontDialog())
             {
-                ApplyFontFamily(dialog.Font.FontFamily.Name);
-                ApplyFontSize(dialog.Font.Size);
-                _fontMenuInitialized = false;
+                dialog.Font = new System.Drawing.Font(
+                    MainTextBox.FontFamily.Source,
+                    (float)MainTextBox.FontSize);
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    ApplyFontFamily(dialog.Font.FontFamily.Name);
+                    ApplyFontSize(dialog.Font.Size);
+                    _fontMenuInitialized = false;
+                }
             }
         }
 
@@ -411,13 +487,81 @@ namespace OverlayNotepad
 
         private void ColorDialog_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true };
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true })
             {
-                var c = dialog.Color;
-                string hex = string.Format("#{0:X2}{1:X2}{2:X2}", c.R, c.G, c.B);
-                ApplyFontColor(hex);
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    var c = dialog.Color;
+                    ApplyFontColor(ColorToHex(Color.FromRgb(c.R, c.G, c.B)));
+                }
             }
+        }
+
+        private void ThemeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleTheme();
+            UpdateThemeMenuHeader();
+        }
+
+        private void UpdateThemeMenuHeader()
+        {
+            ThemeMenuItem.Header = ThemeManager.Instance.CurrentThemeName == "dark"
+                ? "테마: 다크 -> 라이트"
+                : "테마: 라이트 -> 다크";
+        }
+
+        private void InitializeOutlineColorMenu()
+            => InitializeColorMenu(OutlineColorMenu, OutlineColorPreset_Click, OutlineColorDialog_Click);
+
+        private void ApplyOutlineColor(string hex)
+        {
+            var color = (Color)ColorConverter.ConvertFromString(hex);
+            var brush = new SolidColorBrush(color);
+            brush.Freeze();
+            OutlinedText.OutlineBrush = brush;
+            SettingsManager.Instance.Current.TextEffect.OutlineColor = hex;
+            SettingsManager.Instance.Save();
+        }
+
+        private void OutlineColorPreset_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem mi && mi.Tag is string hex)
+                ApplyOutlineColor(hex);
+        }
+
+        private void OutlineColorDialog_Click(object sender, RoutedEventArgs e)
+        {
+            using (var dialog = new System.Windows.Forms.ColorDialog { FullOpen = true })
+            {
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    var c = dialog.Color;
+                    ApplyOutlineColor(ColorToHex(Color.FromRgb(c.R, c.G, c.B)));
+                }
+            }
+        }
+
+        private void MinimizeMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+        {
+            var settings = SettingsManager.Instance.Current;
+            SyncMenuCheckedStates(settings);
+            UpdateThemeMenuHeader();
+
+            string currentSize = MainTextBox.FontSize.ToString();
+            foreach (object item in FontSizeMenu.Items)
+            {
+                if (item is MenuItem mi)
+                    mi.IsChecked = (mi.Tag as string) == currentSize;
+            }
+
+            AutoSaveStatusMenuItem.Header = _autoSaveManager?.HasUnsavedChanges == true
+                ? "저장 대기 중..."
+                : "자동 저장됨";
         }
 
         // 비정상 종료 시 App.xaml.cs에서 호출

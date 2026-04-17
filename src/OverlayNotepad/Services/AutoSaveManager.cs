@@ -20,6 +20,8 @@ namespace OverlayNotepad.Services
             _timer.Tick += Timer_Tick;
         }
 
+        public bool HasUnsavedChanges => _isDirty;
+
         public void Start() => _timer.Start();
 
         public void Stop() => _timer.Stop();
