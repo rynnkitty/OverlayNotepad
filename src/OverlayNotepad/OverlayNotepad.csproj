@@ -75,6 +75,8 @@
     <Compile Include="Helpers\FontHelper.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
     <Compile Include="Services\TrayIconManager.cs" />
+    <Compile Include="Models\ThemeDefinition.cs" />
+    <Compile Include="Services\ThemeManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
