@@ -5,6 +5,31 @@
 > - **sprint-review** 에이전트가 코드 리뷰와 자동 검증 결과를 이 파일에 기록합니다.
 > - 완료된 항목은 `✅`, 미완료 항목은 `⬜`로 표시합니다.
 
+### 프로덕션 배포 - v1.0 (2026-04-17)
+
+포함 스프린트: Phase 1 Sprint 1~2, Phase 2 Sprint 1~2, Phase 3 Sprint 1~2, Phase 4 Sprint 1~2
+PR: https://github.com/rynnkitty/OverlayNotepad/compare/main...phase4-sprint2 (GitHub 웹에서 머지 필요)
+브랜치: `phase4-sprint2` → `main` (direct, develop 브랜치 없는 구조)
+
+- ✅ MSBuild Debug/Release 빌드: 경고 0, 오류 0
+- ✅ 단일 EXE 56KB 독립 실행 확인
+- ✅ Phase 4 DoD 9항목 전체 충족
+- ✅ PRD F1~F11 코드 검증 완료
+- ⬜ GitHub 웹에서 PR 머지 (phase4-sprint2 → main)
+
+**수동 검증 필요 항목 (머지 후):**
+- ⬜ 앱 실행 시 작업 표시줄 및 탐색기에서 앱 아이콘 표시 확인
+- ⬜ DPI 150% 환경에서 앱 실행 시 UI 정상 스케일링 확인
+- ⬜ 유휴 상태 메모리 80MB 이하 확인 (작업 관리자)
+- ⬜ 유휴 CPU 0% 근접 확인 (30초 관찰)
+- ⬜ 시작 시간 2초 이내 확인
+- ⬜ 단일 EXE(56KB) 별도 폴더 복사 후 독립 실행 확인
+- ⬜ 전체 기능 통합 테스트 (글로벌 핫키, Click-Through, 테마, 서식, 자동저장)
+- ⬜ 엣지 케이스 9종 수동 확인
+- ⬜ PRD F1~F11 전체 기능 최종 동작 확인
+
+---
+
 ### Phase 4 Sprint 2: 최종 마무리 + 배포 준비 (2026-04-17)
 
 PR: (PR 생성 후 업데이트 예정)

@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T18:00:00",
+  "lastUpdated": "2026-04-17T19:00:00",
   "phases": [
     {
       "phase": 1,
@@ -448,5 +448,14 @@
     }
   ],
   "hotfixes": [],
-  "deployHistory": []
+  "deployHistory": [
+    {
+      "date": "2026-04-17",
+      "type": "sprint",
+      "ref": "phase4-sprint2",
+      "description": "v1.0 프로덕션 배포 - Phase 1~4 전체 스프린트 완료. PRD F1~F11 + Phase 4 DoD 9항목 충족. 단일 EXE 56KB Release 빌드.",
+      "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/main...phase4-sprint2",
+      "status": "pending-merge"
+    }
+  ]
 }
