@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +73,7 @@
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Services\AutoSaveManager.cs" />
     <Compile Include="Helpers\ScreenHelper.cs" />
+    <Compile Include="Services\TrayIconManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
