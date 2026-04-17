@@ -5,13 +5,13 @@
 > - **sprint-review** 에이전트가 코드 리뷰와 자동 검증 결과를 이 파일에 기록합니다.
 > - 완료된 항목은 `✅`, 미완료 항목은 `⬜`로 표시합니다.
 
-### Phase 2 Sprint 2: 설정 관리 + 자동 저장 + 윈도우 관리 (2026-04-17)
+### Phase 3 Sprint 1: 시스템 트레이 + 서식 지원 (2026-04-17)
 
-PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint2 (사용자가 GitHub 웹에서 수동 생성 필요)
-- 브랜치: `phase2-sprint2` → `develop`
-- 제목(권장): `feat: Sprint 2 완료 - 설정 관리 + 자동 저장 + 윈도우 관리`
+PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase3-sprint1 (사용자가 GitHub 웹에서 수동 생성 필요)
+- 브랜치: `phase3-sprint1` → `develop`
+- 제목(권장): `feat: Sprint 1 완료 - 시스템 트레이 + 서식 지원 (글꼴/크기/색상)`
 
-- ⬜ GitHub 웹에서 PR 생성 (phase2-sprint2 → develop)
+- ⬜ GitHub 웹에서 PR 생성 (phase3-sprint1 → develop)
 
 **코드 리뷰:**
 - ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
@@ -20,11 +20,23 @@ PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint2
 - ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
 
 **수동 검증 필요 항목:**
-- ⬜ 사용자가 GitHub 웹에서 PR 생성 (phase2-sprint2 → develop)
-- ⬜ 텍스트 입력 후 2초 뒤 `%AppData%/OverlayNotepad/memo.txt` 갱신 확인
-- ⬜ 프로그램 재실행 시 이전 텍스트/위치/크기 복원 확인
-- ⬜ settings.json 삭제/손상 후 기본값 복원 확인
+- ⬜ 앱 실행 후 시스템 트레이 아이콘 표시 확인
+- ⬜ 최소화 시 작업표시줄에서 사라지고 트레이에만 표시 확인
+- ⬜ 트레이 더블클릭으로 윈도우 복원 확인
+- ⬜ 트레이 우클릭 메뉴(표시/숨김, 항상 위에, 종료) 동작 확인
+- ⬜ 우클릭 메뉴 > 글꼴 서브메뉴에서 프리셋 + "더 보기..." 동작 확인
+- ⬜ 우클릭 메뉴 > 글자 크기 서브메뉴 7단계 프리셋 + "직접 입력..." 동작 확인
+- ⬜ 우클릭 메뉴 > 글자 색상 서브메뉴 10색 + "사용자 지정..." 동작 확인
+- ⬜ 서식 변경 후 종료 → 재실행 시 서식 설정 복원 확인
 - ⬜ PR 머지 후 develop 브랜치 로컬 동기화
+
+---
+
+### Phase 2 Sprint 2: 설정 관리 + 자동 저장 + 윈도우 관리 (2026-04-17)
+
+(아카이빙됨: docs/deploy-history/2026-04-17.md)
+- ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
+- ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
 
 ---
 

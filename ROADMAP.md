@@ -18,10 +18,10 @@
 
 ## 프로젝트 현황 대시보드
 
-- 전체 진행률: Phase 2/4 완료 (Sprint 1~2 + Phase 2 Sprint 1~2 완료)
-- 현재 Phase: Phase 2 완료, Phase 3 예정
-- 완료된 스프린트: Phase 1 Sprint 1 (2026-04-17), Phase 1 Sprint 2 (2026-04-17), Phase 2 Sprint 1 (2026-04-17), Phase 2 Sprint 2 (2026-04-17)
-- 다음 마일스톤: Phase 3 완료 (시스템 트레이 + 서식/테마 + 컨텍스트 메뉴 완성 - MVP 출시)
+- 전체 진행률: Phase 2/4 완료 + Phase 3 Sprint 1 완료 (Sprint 1~2 + Phase 2 Sprint 1~2 + Phase 3 Sprint 1 완료)
+- 현재 Phase: Phase 3 진행 중 (Sprint 1 완료, Sprint 2 예정)
+- 완료된 스프린트: Phase 1 Sprint 1 (2026-04-17), Phase 1 Sprint 2 (2026-04-17), Phase 2 Sprint 1 (2026-04-17), Phase 2 Sprint 2 (2026-04-17), Phase 3 Sprint 1 (2026-04-17)
+- 다음 마일스톤: Phase 3 완료 (다크/라이트 테마 + 컨텍스트 메뉴 완성 - MVP 출시)
 
 ## 기술 아키텍처 결정 사항
 
@@ -178,14 +178,14 @@ WPF 프로젝트를 생성하고 핵심 기반을 구축한다. 타이틀바 없
 **이 Phase 완료 시 MVP 출시 가능.**
 
 ### 작업 목록
-#### Sprint 1: 시스템 트레이 + 서식 지원 🔄
-- 시스템 트레이 아이콘 (WinForms NotifyIcon 인터롭)
-- 최소화 시 트레이로 숨김, 더블클릭 복원
-- 트레이 우클릭 메뉴 (표시/숨김, Always on Top, 종료)
-- 글꼴 변경 (시스템 설치 글꼴 선택)
-- 글자 크기 변경
-- 글자 색상 변경
-- 서식 설정 저장/복원 (settings.json 연동)
+#### Sprint 1: 시스템 트레이 + 서식 지원 ✅ (2026-04-17 완료)
+- ✅ 시스템 트레이 아이콘 (WinForms NotifyIcon 인터롭)
+- ✅ 최소화 시 트레이로 숨김, 더블클릭 복원
+- ✅ 트레이 우클릭 메뉴 (표시/숨김, Always on Top, 종료)
+- ✅ 글꼴 변경 (시스템 설치 글꼴 선택)
+- ✅ 글자 크기 변경
+- ✅ 글자 색상 변경
+- ✅ 서식 설정 저장/복원 (settings.json 연동)
 
 #### Sprint 2: 다크/라이트 테마 + 컨텍스트 메뉴 완성 🔄
 - 다크 테마 정의 (글자색 흰색, 배경 검정 반투명, 테두리 검정)
