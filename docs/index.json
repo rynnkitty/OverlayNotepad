@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T12:00:00",
+  "lastUpdated": "2026-04-17T18:00:00",
   "phases": [
     {
       "phase": 1,
@@ -107,51 +107,52 @@
     {
       "phase": 2,
       "title": "텍스트 테두리/그림자 + 자동 저장 + 윈도우 관리",
-      "status": "planned",
+      "status": "in_progress",
       "document": "docs/phase/phase2/phase2.md",
       "sprints": [
         {
           "sprint": 1,
           "title": "텍스트 테두리 및 그림자 효과",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase2-sprint1",
           "document": "docs/phase/phase2/sprint1/sprint1.md",
-          "progress": { "total": 4, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase2-sprint1",
+          "progress": { "total": 4, "completed": 4 },
           "tasks": [
             {
               "id": "task1",
               "title": "TextEffectSettings 모델 + OutlinedTextControl 커스텀 컨트롤",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task2",
               "title": "DropShadowEffect + MainWindow 이중 레이어 통합",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task3",
               "title": "테두리/그림자 토글 + 컨텍스트 메뉴 연동",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
               "id": "task4",
               "title": "통합 검증 + 가독성 테스트 + 엣지 케이스",
-              "path": null,
+              "path": "docs/phase/phase2/sprint1/sprint1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]
