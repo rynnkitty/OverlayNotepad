@@ -7,10 +7,14 @@
 
 ### Phase 1 Sprint 1: WPF 프로젝트 구조 + 투명 윈도우 + 기본 텍스트 입력 (2026-04-17)
 
-PR: (생성 후 업데이트 예정)
+PR: https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint1 (사용자가 GitHub 웹에서 수동 생성 필요)
+- 브랜치: `phase1-sprint1` → `develop`
+- 제목(권장): `feat(phase1-sprint1): WPF 투명 윈도우 + 텍스트 입력 프로토타입`
 
+- ⬜ GitHub 웹에서 PR 생성 (phase1-sprint1 → develop)
 - ⬜ 코드 리뷰 미수행 (sprint-review 에이전트로 실행 필요)
 - ⬜ 자동 검증 미수행 (sprint-review 에이전트로 실행 필요)
+- ⬜ PR 머지 후 develop 브랜치 로컬 동기화 (`git checkout develop && git pull origin develop`)
 
 ---
 

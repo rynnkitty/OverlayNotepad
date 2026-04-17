@@ -14,7 +14,7 @@
           "status": "completed",
           "branch": "phase1-sprint1",
           "document": "docs/phase/phase1/sprint1/sprint1.md",
-          "prUrl": "",
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint1",
           "progress": { "total": 3, "completed": 3 },
           "tasks": [
             {
