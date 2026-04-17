@@ -1,6 +1,6 @@
 {
   "project": "OverlayNotepad",
-  "lastUpdated": "2026-04-17T00:00:00",
+  "lastUpdated": "2026-04-17T12:00:00",
   "phases": [
     {
       "phase": 1,
@@ -49,10 +49,11 @@
         {
           "sprint": 2,
           "title": "투명도 모드 + Always on Top + 컨텍스트 메뉴 골격",
-          "status": "planned",
+          "status": "completed",
           "branch": "phase1-sprint2",
           "document": "docs/phase/phase1/sprint2/sprint2.md",
-          "progress": { "total": 5, "completed": 0 },
+          "prUrl": "https://github.com/rynnkitty/OverlayNotepad/compare/develop...phase1-sprint2",
+          "progress": { "total": 5, "completed": 5 },
           "tasks": [
             {
               "id": "task1",
@@ -60,7 +61,7 @@
               "path": "docs/phase/phase1/sprint2/task1/task1.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -69,7 +70,7 @@
               "path": "docs/phase/phase1/sprint2/task2/task2.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -78,7 +79,7 @@
               "path": "docs/phase/phase1/sprint2/task3/task3.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -87,7 +88,7 @@
               "path": "docs/phase/phase1/sprint2/task4/task4.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             },
             {
@@ -96,7 +97,7 @@
               "path": "docs/phase/phase1/sprint2/task5/task5.md",
               "testPlan": null,
               "testResult": null,
-              "status": "planned",
+              "status": "completed",
               "commits": []
             }
           ]
