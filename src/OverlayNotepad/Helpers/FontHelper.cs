@@ -6,21 +6,19 @@ namespace OverlayNotepad.Helpers
 {
     public static class FontHelper
     {
-        private static InstalledFontCollection _installedFonts;
+        private static readonly HashSet<string> _installedNames = LoadInstalledNames();
 
-        private static InstalledFontCollection InstalledFonts
+        private static HashSet<string> LoadInstalledNames()
         {
-            get
+            using (var fc = new InstalledFontCollection())
             {
-                if (_installedFonts == null)
-                    _installedFonts = new InstalledFontCollection();
-                return _installedFonts;
+                return new HashSet<string>(fc.Families.Select(f => f.Name));
             }
         }
 
         public static bool IsInstalled(string fontName)
         {
-            return InstalledFonts.Families.Any(f => f.Name == fontName);
+            return _installedNames.Contains(fontName);
         }
 
         public static List<string> GetPresetFonts()

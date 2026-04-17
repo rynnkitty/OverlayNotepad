@@ -54,9 +54,9 @@ namespace OverlayNotepad
             var font = settings.Font;
             if (!FontHelper.IsInstalled(font.Family))
                 font.Family = "맑은 고딕";
-            ApplyFontFamily(font.Family);
-            ApplyFontSize(font.Size);
-            ApplyFontColor(font.Color);
+            ApplyFontFamily(font.Family, persist: false);
+            ApplyFontSize(font.Size, persist: false);
+            ApplyFontColor(font.Color, persist: false);
 
             // 메모 복원
             MainTextBox.Text = SettingsManager.Instance.LoadMemo();
@@ -187,14 +187,9 @@ namespace OverlayNotepad
 
         private void AlwaysOnTopMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            this.Topmost = menuItem.IsChecked;
-            _trayIconManager?.UpdateAlwaysOnTopState(this.Topmost);
-            SettingsManager.Instance.Current.Topmost = this.Topmost;
-            SettingsManager.Instance.Save();
+            if (sender is MenuItem menuItem)
+                SetTopmost(menuItem.IsChecked);
         }
-
-        // --- 트레이 이벤트 핸들러 ---
 
         private void OnTrayToggleVisibility(object sender, System.EventArgs e)
         {
@@ -213,16 +208,21 @@ namespace OverlayNotepad
 
         private void OnTrayAlwaysOnTopToggle(object sender, System.EventArgs e)
         {
-            this.Topmost = !this.Topmost;
-            _trayIconManager?.UpdateAlwaysOnTopState(this.Topmost);
-            AlwaysOnTopMenuItem.IsChecked = this.Topmost;
-            SettingsManager.Instance.Current.Topmost = this.Topmost;
-            SettingsManager.Instance.Save();
+            SetTopmost(!this.Topmost);
         }
 
         private void OnTrayExit(object sender, System.EventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void SetTopmost(bool value)
+        {
+            this.Topmost = value;
+            AlwaysOnTopMenuItem.IsChecked = value;
+            _trayIconManager?.UpdateAlwaysOnTopState(value);
+            SettingsManager.Instance.Current.Topmost = value;
+            SettingsManager.Instance.Save();
         }
 
         private void BackgroundTransparentMenuItem_Click(object sender, RoutedEventArgs e)
@@ -281,36 +281,33 @@ namespace OverlayNotepad
             this.DragMove();
         }
 
-        // --- 서식 적용 메서드 ---
-
-        private void ApplyFontFamily(string fontName)
+        private void ApplyFontFamily(string fontName, bool persist = true)
         {
             var family = new FontFamily(fontName);
             MainTextBox.FontFamily = family;
             OutlinedText.FontFamily = family;
             SettingsManager.Instance.Current.Font.Family = fontName;
-            SettingsManager.Instance.Save();
+            if (persist) SettingsManager.Instance.Save();
         }
 
-        private void ApplyFontSize(double size)
+        private void ApplyFontSize(double size, bool persist = true)
         {
             MainTextBox.FontSize = size;
             OutlinedText.FontSize = size;
             SettingsManager.Instance.Current.Font.Size = size;
-            SettingsManager.Instance.Save();
+            if (persist) SettingsManager.Instance.Save();
         }
 
-        private void ApplyFontColor(string hex)
+        private void ApplyFontColor(string hex, bool persist = true)
         {
             var color = (Color)ColorConverter.ConvertFromString(hex);
             var brush = new SolidColorBrush(color);
             OutlinedText.FillBrush = brush;
             MainTextBox.CaretBrush = brush;
-            // 테두리 OFF 상태면 TextBox Foreground도 변경
             if (!TextEffectCurrent.OutlineEnabled)
                 MainTextBox.Foreground = brush;
             SettingsManager.Instance.Current.Font.Color = hex;
-            SettingsManager.Instance.Save();
+            if (persist) SettingsManager.Instance.Save();
         }
 
         private void InitializeFontColorMenu()
@@ -329,8 +326,6 @@ namespace OverlayNotepad
             customItem.Click += ColorDialog_Click;
             FontColorMenu.Items.Add(customItem);
         }
-
-        // --- 글꼴 서브메뉴 ---
 
         private void FontFamilyMenu_SubmenuOpened(object sender, RoutedEventArgs e)
         {
@@ -362,7 +357,6 @@ namespace OverlayNotepad
             if (sender is MenuItem mi && mi.Tag is string fontName)
             {
                 ApplyFontFamily(fontName);
-                // 체크 상태 업데이트
                 foreach (object item in FontFamilyMenu.Items)
                 {
                     if (item is MenuItem m)
@@ -381,11 +375,9 @@ namespace OverlayNotepad
             {
                 ApplyFontFamily(dialog.Font.FontFamily.Name);
                 ApplyFontSize(dialog.Font.Size);
-                _fontMenuInitialized = false; // 다음 열기 시 재초기화
+                _fontMenuInitialized = false;
             }
         }
-
-        // --- 글자 크기 서브메뉴 ---
 
         private void FontSizePreset_Click(object sender, RoutedEventArgs e)
         {
@@ -410,8 +402,6 @@ namespace OverlayNotepad
             if (double.TryParse(input, out double size) && size >= 6 && size <= 72)
                 ApplyFontSize(size);
         }
-
-        // --- 글자 색상 서브메뉴 ---
 
         private void ColorPreset_Click(object sender, RoutedEventArgs e)
         {
